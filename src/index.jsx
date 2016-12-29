@@ -32,7 +32,9 @@ ReactDOM.render(
   // <Provider store={store}>
   //   <Router history={hashHistory}>{routes}</Router>
   // </Provider>,
-  <App dispatch={store.dispatch} isAuthenticated={false}/>,
+  <Provider store={store}>
+    <App dispatch={store.dispatch} isAuthenticated={false}/>
+  </Provider>,
   document.getElementById('app')
 );
 
