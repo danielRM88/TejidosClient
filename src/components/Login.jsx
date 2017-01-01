@@ -1,29 +1,38 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Home from './Home';
-import Navbar from './Navbar';
-import { loginUser } from './../actions';
 
-const Login =  React.createClass({
-  render: function() {
-    console.log(this.props);
-    const { isAuthenticated } = this.props
+const Login = React.createClass({
+  render: function () {
+    const { message } = this.props
     return ( 
       <div>
-        <h1>Login, {isAuthenticated.toString()}</h1> 
-        <button onClick={(event) => this.handleClick(event)}> Login </button>
+        <h1>Login</h1>
+        <form onSubmit={(event) => this.handleClick(event)}>
+          <input type="text" ref="email" name="email" placeholder="email"/>
+          <input type="password" ref="password" name="password" placeholder="password"/>
+          <button type="submit"> Login </button>
+        </form>
+        <p>{message}</p>
       </div>
     )
   },
-  handleClick: function(event) {
-    this.props.onLoginClick();
+  handleClick: function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const email = this.refs.email.value.trim();
+    const password = this.refs.password.value.trim();
+    this.props.onLoginClick(email, password);
   }
 });
 
+Login.propTypes = {
+  message: React.PropTypes.string
+}
+
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
+    message: state.get('auth').get('message')
 });
 
-connect(mapStateToProps)(Login);
-export default Login;
+const ConnectedLogin = connect(mapStateToProps, null)(Login);
+export default ConnectedLogin;

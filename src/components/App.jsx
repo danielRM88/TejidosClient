@@ -4,23 +4,24 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Home from './Home';
 import Navbar from './Navbar';
 import Login from './Login';
-import { loginUser } from './../actions';
-
-// const isAuthenticated = false;
+import { requestLogin, requestLogout } from './../actions/authActions';
 
 const App = React.createClass({
   mixins: [PureRenderMixin],
   render: function() {
-    // console.log(this.props);
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, dispatch, token } = this.props;
+    console.log(this.props);
     if(isAuthenticated) {
       return (
         <div>
-          <Navbar />
+          <Navbar 
+            onLogoutClick={ () => dispatch(requestLogout()) }
+          />
+          {this.props.children}
         </div>
       )
     } else {
-      return <Login isAuthenticated={isAuthenticated} onLoginClick={ () => this.props.dispatch(loginUser()) } />
+      return <Login onLoginClick={ (email, password) => dispatch(requestLogin(email, password)) } />
     }
   }
 });
@@ -30,23 +31,10 @@ App.propTypes = {
   isAuthenticated: React.PropTypes.bool.isRequired
 }
 
-// These props come from the application's
-// state when it is started
-// function mapStateToProps(state) {
-
-//   const { auth } = state
-//   const { isAuthenticated } = auth
-
-//   // console.log(state);
-
-//   return {
-//     isAuthenticated
-//   };
-// }
-
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.get('auth').get('isAuthenticated'),
+    token: state.get('auth').get('token')
 });
 
-connect(mapStateToProps)(App);
-export default App;
+const ConnectedApp = connect(mapStateToProps, null)(App);
+export default ConnectedApp;
