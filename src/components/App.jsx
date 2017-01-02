@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Home from './Home';
 import Navbar from './Navbar';
 import Login from './Login';
 import { requestLogin, requestLogout } from './../actions/authActions';
@@ -9,14 +8,11 @@ import { requestLogin, requestLogout } from './../actions/authActions';
 const App = React.createClass({
   mixins: [PureRenderMixin],
   render: function() {
-    const { isAuthenticated, dispatch, token } = this.props;
-    console.log(this.props);
+    const { isAuthenticated, dispatch } = this.props;
     if(isAuthenticated) {
       return (
         <div>
-          <Navbar 
-            onLogoutClick={ () => dispatch(requestLogout()) }
-          />
+          <Navbar onLogoutClick={ () => dispatch(requestLogout()) } />
           {this.props.children}
         </div>
       )

@@ -41,7 +41,7 @@ const authService = store => next => action => {
     break
   case 'LOGOUT_REQUEST':
     next(action)
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
     next({
       type: 'LOGOUT_SUCCESS'
     })
