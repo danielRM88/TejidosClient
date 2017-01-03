@@ -24,8 +24,9 @@ const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authServi
 const routes = <Route path="/" component={App}>
                 <IndexRoute component={Home} />
                 <Route path="/fabrics" component={FabricList} />
-                <Route path="/fabric/new" component={FabricForm} />
-                <Route path="/fabric/:id" component={FabricDetail} />
+                <Route path="/fabrics/new" component={FabricForm} />
+                <Route path="/fabrics/:id/edit" component={FabricForm} />
+                <Route path="/fabrics/:id" component={FabricDetail} />
                 <Route path='*' component={NotFound} />
                </Route>;
 

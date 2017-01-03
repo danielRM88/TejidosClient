@@ -21,11 +21,14 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  externals: {
+    'config': JSON.stringify(process.env.ENV === 'production' ? require('./config.prod.json') : require('./config/config.dev.json'))
+  },
   devServer: {
     contentBase: './dist',
     hot: true
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
 };

@@ -1,4 +1,5 @@
-import request from 'superagent'
+var config = require('config');
+import request from 'superagent';
 
 const authService = store => next => action => {
   /*
@@ -11,7 +12,7 @@ const authService = store => next => action => {
     In case we receive an action to send an API request, send the appropriate request
     */
     request
-      .post('http://localhost:3000/api/v1/auth_user')
+      .post(config.serverUrl+'/api/v1/auth_user')
       .set('Content-Type', 'application/json')
       .send({ email : action.email })
       .send({ password: action.password })
