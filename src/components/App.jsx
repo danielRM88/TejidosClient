@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Navbar from './Navbar';
 import Login from './Login';
-import { requestLogin, requestLogout } from './../actions/authActions';
+import { loginRequest, logoutRequest } from '../actions/authActions';
 
 const App = React.createClass({
   mixins: [PureRenderMixin],
@@ -12,12 +12,12 @@ const App = React.createClass({
     if(isAuthenticated) {
       return (
         <div>
-          <Navbar onLogoutClick={ () => dispatch(requestLogout()) } />
+          <Navbar onLogoutClick={ () => dispatch(logoutRequest()) } />
           {this.props.children}
         </div>
       )
     } else {
-      return <Login onLoginClick={ (email, password) => dispatch(requestLogin(email, password)) } />
+      return <Login onLoginClick={ (email, password) => dispatch(loginRequest(email, password)) } />
     }
   }
 });

@@ -6,46 +6,45 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
 
-export function requestLogin(email, password) {
+export function loginRequest(email, password) {
   return {
     type: LOGIN_REQUEST,
-    isFetching: true,
+    loading: true,
     isAuthenticated: false,
     email: email,
     password: password
   }
 }
 
-export function receiveLogin(auth) {
-  console.log(auth);
+export function loginSuccess(auth) {
   return {
     type: LOGIN_SUCCESS,
-    isFetching: false,
+    loading: false,
     isAuthenticated: true,
     token: auth.auth_token
   }
 }
 
-export function loginError(message) {
+export function loginFailure(message) {
   return {
     type: LOGIN_FAILURE,
-    isFetching: false,
+    loading: false,
     isAuthenticated: false,
     message
   }
 }
 
-export function requestLogout(email, password) {
+export function logoutRequest() {
   return {
     type: LOGOUT_REQUEST,
-    isFetching: true
+    loading: true
   }
 }
 
-export function receiveLogout(email, password) {
+export function logoutSuccess() {
   return {
     type: LOGOUT_SUCCESS,
-    isFetching: false,
+    loading: false,
     isAuthenticated: false
   }
 }

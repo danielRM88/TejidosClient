@@ -10,7 +10,7 @@ import Home from './components/Home';
 import FabricDetail from './components/fabrics/FabricDetail';
 import FabricList from './components/fabrics/FabricList';
 import FabricForm from './components/fabrics/FabricForm';
-import authService from './services/authService';
+import authMiddleware from './middleware/authMiddleware';
 import {Map} from 'immutable';
 
 const NotFound = () => (
@@ -19,7 +19,7 @@ const NotFound = () => (
 let token = localStorage.getItem('token') || null
 const logger = createLogger();
 const INIT_STATE = Map({ auth: Map({ isAuthenticated: (token ? true : false), token }) });
-const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authService));
+const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware));
 
 const routes = <Route path="/" component={App}>
                 <IndexRoute component={Home} />
