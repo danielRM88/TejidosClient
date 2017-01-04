@@ -30,9 +30,4 @@ Login.propTypes = {
   message: React.PropTypes.string
 }
 
-const mapStateToProps = (state) => ({
-    message: state.get('auth').get('message')
-});
-
-const ConnectedLogin = connect(mapStateToProps, null)(Login);
-export default ConnectedLogin;
+export default Login

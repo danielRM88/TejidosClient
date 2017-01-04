@@ -1,24 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React                                    from 'react';
+import ReactDOM                                 from 'react-dom';
 import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import createLogger from 'redux-logger';
-import reducer from './reducer';
-import App from './components/App';
-import Home from './components/Home';
-import FabricDetail from './components/fabrics/FabricDetail';
-import FabricList from './components/fabrics/FabricList';
-import FabricForm from './components/fabrics/FabricForm';
-import authMiddleware from './middleware/authMiddleware';
-import {Map} from 'immutable';
+import {Provider}                               from 'react-redux';
+import {createStore, applyMiddleware}           from 'redux';
+import createLogger                             from 'redux-logger';
+import reducer                                  from './reducers/reducer';
+import App                                      from './containers/AppContainer';
+import Home                                     from './components/Home';
+import FabricDetail                             from './components/fabrics/FabricDetail';
+import FabricList                               from './components/fabrics/FabricList';
+import FabricForm                               from './components/fabrics/FabricForm';
+import authMiddleware                           from './middleware/authMiddleware';
+import { Map, fromJS }                          from 'immutable';
 
 const NotFound = () => (
-  <h1> This page was not found! </h1>)
+  <h1> This page was not found! </h1>
+)
 
 let token = localStorage.getItem('token') || null
 const logger = createLogger();
-const INIT_STATE = Map({ auth: Map({ isAuthenticated: (token ? true : false), token }) });
+const INIT_STATE = fromJS({ "auth": { "isAuthenticated": (token ? true : false), token } });
 const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware));
 
 const routes = <Route path="/" component={App}>
