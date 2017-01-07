@@ -1,19 +1,26 @@
 import {Map, fromJS} from 'immutable';
-const INIT_STATE = fromJS({ auth: { isAuthenticated: false } });
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS } from '../actions/authActions';
+const INIT_STATE = fromJS({ isAuthenticated: false });
 
 export default function auth(state, action) {
   switch (action.type) {
-    case 'LOGIN_REQUEST':
+    case LOGIN_REQUEST:
+      let newStateAfterReq = state.setIn(['loading'], true);
+      newStateAfterReq = newStateAfterReq.deleteIn(['token']);
+      newStateAfterReq = newStateAfterReq.deleteIn(['message']);
+      return newStateAfterReq;
+    case LOGIN_SUCCESS:
+      let newStateAfterSuccess = state.setIn(['isAuthenticated'], true);
+      newStateAfterSuccess = newStateAfterSuccess.setIn(['loading'], false);
+      newStateAfterSuccess = newStateAfterSuccess.setIn(['token'], action.token);
+      return newStateAfterSuccess;
+    case LOGIN_FAILURE:
+      let newStateAfterFailure = state.setIn(['message'], action.message);
+      newStateAfterFailure = newStateAfterFailure.setIn(['loading'], false);
+      return newStateAfterFailure;
+    case LOGOUT_REQUEST:
       return state;
-    case 'LOGIN_SUCCESS':
-      let newState = state.setIn(['isAuthenticated'], true);
-      newState = newState.setIn(['token'], action.token);
-      return newState;
-    case 'LOGIN_FAILURE':
-      return state.setIn(['message'], action.message);
-    case 'LOGOUT_REQUEST':
-      return state;
-    case 'LOGOUT_SUCCESS':
+    case LOGOUT_SUCCESS:
       let newerState = state.deleteIn(['token']);
       return newerState.setIn(['isAuthenticated'], false);
   }

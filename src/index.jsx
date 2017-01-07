@@ -1,17 +1,18 @@
-import React                                    from 'react';
-import ReactDOM                                 from 'react-dom';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import {Provider}                               from 'react-redux';
-import {createStore, applyMiddleware}           from 'redux';
-import createLogger                             from 'redux-logger';
-import reducer                                  from './reducers/reducer';
-import App                                      from './containers/AppContainer';
-import Home                                     from './components/Home';
-import FabricDetail                             from './components/fabrics/FabricDetail';
-import FabricList                               from './components/fabrics/FabricList';
-import FabricForm                               from './components/fabrics/FabricForm';
-import authMiddleware                           from './middleware/authMiddleware';
-import { Map, fromJS }                          from 'immutable';
+import React                                         from 'react';
+import ReactDOM                                      from 'react-dom';
+import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
+import {Provider}                                    from 'react-redux';
+import {createStore, applyMiddleware}                from 'redux';
+import createLogger                                  from 'redux-logger';
+import reducer                                       from './reducers/reducer';
+import App                                           from './containers/AppContainer';
+import Home                                          from './components/Home';
+import FabricForm                                    from './containers/fabrics/FabricFormContainer';
+import FabricList                                    from './components/fabrics/FabricList';
+import FabricDetail                                  from './components/fabrics/FabricDetail';
+import authMiddleware                                from './middleware/authMiddleware';
+import fabricsMiddleware                             from './middleware/fabricsMiddleware';
+import { Map, fromJS }                               from 'immutable';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -19,8 +20,8 @@ const NotFound = () => (
 
 let token = localStorage.getItem('token') || null
 const logger = createLogger();
-const INIT_STATE = fromJS({ "auth": { "isAuthenticated": (token ? true : false), token } });
-const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware));
+const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), token, loading: false }, fabrics: {} });
+const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware, fabricsMiddleware));
 
 const routes = <Route path="/" component={App}>
                 <IndexRoute component={Home} />

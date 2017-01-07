@@ -1,10 +1,11 @@
 import authService from '../services/authService'
-import { loginSuccess, loginFailure, logoutSuccess } from '../actions/authActions';
+import { loginSuccess, loginFailure, logoutSuccess, LOGIN_REQUEST, LOGOUT_REQUEST } from '../actions/authActions';
+import { browserHistory } from 'react-router';
 
 const authMiddleware = store => next => action => {
+  next(action)
   switch (action.type) {
-    case 'LOGIN_REQUEST':
-      next(action)
+    case LOGIN_REQUEST:
 
       const error = (err) => {
         return next(loginFailure("Invalid email / password"));
@@ -18,13 +19,9 @@ const authMiddleware = store => next => action => {
       authService(action, success, error);
       
       break
-    case 'LOGOUT_REQUEST':
-      next(action)
+    case LOGOUT_REQUEST:
       localStorage.removeItem('token');
       next(logoutSuccess());
-    /*
-    Do nothing if the action does not interest us
-    */
     default:
       break
   }
