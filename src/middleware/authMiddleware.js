@@ -1,5 +1,6 @@
 import authService from '../services/authService'
 import { loginSuccess, loginFailure, logoutSuccess, LOGIN_REQUEST, LOGOUT_REQUEST } from '../actions/authActions';
+import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory } from 'react-router';
 
 const authMiddleware = store => next => action => {
@@ -8,11 +9,13 @@ const authMiddleware = store => next => action => {
     case LOGIN_REQUEST:
 
       const error = (err) => {
+        next(setMessage("Invalid email / password", "error"));
         return next(loginFailure("Invalid email / password"));
       };
 
       const success = (response) => {
         localStorage.setItem('token', response.auth_token)
+        next(removeMessage());
         next(loginSuccess(response));
       };
 

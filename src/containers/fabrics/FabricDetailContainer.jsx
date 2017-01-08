@@ -1,4 +1,4 @@
-import FabricForm from '../../components/fabrics/FabricForm'
+import FabricDetail from '../../components/fabrics/FabricDetail'
 import { connect } from 'react-redux';
 import { createFabricRequest } from '../../actions/fabricsActions';
 
@@ -13,5 +13,5 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-const FabricFormContainer = connect(mapStateToProps, mapDispatchToProps)(FabricForm);
-export default FabricFormContainer;
+const FabricDetailContainer = connect(mapStateToProps, null)(FabricDetail);
+export default FabricDetailContainer;

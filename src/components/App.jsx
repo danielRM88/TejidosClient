@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import PureRenderMixin      from 'react-addons-pure-render-mixin';
 import Navbar               from './Navbar';
 import Login                from '../containers/LoginContainer';
+import Messages             from '../containers/MessagesContainer';
 
 const App = React.createClass({
   mixins: [PureRenderMixin],
@@ -11,11 +12,17 @@ const App = React.createClass({
       return (
         <div>
           <Navbar onLogoutClick={ () => onLogoutClick() } />
+          <Messages />
           {this.props.children}
         </div>
       )
     } else {
-      return <Login onLoginClick={ (email, password) => onLoginClick(email, password) } />
+      return (
+        <div>
+          <Messages />
+          <Login onLoginClick={ (email, password) => onLoginClick(email, password) } />
+        </div>
+      )
     }
   }
 });

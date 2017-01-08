@@ -2,7 +2,7 @@ import {Map, fromJS} from 'immutable';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS } from '../actions/authActions';
 const INIT_STATE = fromJS({ isAuthenticated: false });
 
-export default function auth(state, action) {
+export default function auth(state = INIT_STATE, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
       let newStateAfterReq = state.setIn(['loading'], true);

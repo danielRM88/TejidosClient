@@ -5,13 +5,17 @@ const INIT_STATE = fromJS({ list: [], fabric: {}, loading: false });
 export default function fabrics(state, action) {
   switch (action.type) {
     case CREATE_FABRIC_REQUEST:
-      return state.setIn(['loading'], true);
+      let newStateAfterReq = state.deleteIn(['message']);
+      return newStateAfterReq.setIn(['loading'], true);
     case CREATE_FABRIC_SUCCESS:
       let newState = state.deleteIn(['fabric']);
       newState = newState.setIn(['loading'], false);
+      newState = newState.setIn(['message'], action.message);
       return newState;
     case CREATE_FABRIC_FAILURE:
-      return state.setIn(['message'], action.message);
+      let newStateAfterFabric = state.setIn(['message'], action.message);
+      newStateAfterFabric = newStateAfterFabric.setIn(['loading'], false);
+      return newStateAfterFabric;
   }
   return state;
 }

@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 
 const FabricForm = React.createClass({
   render: function() {
-    const { code } = this.props
+    const { loading } = this.props
     return (
       <div>
         <h1>Nueva Tela</h1>
@@ -15,6 +15,7 @@ const FabricForm = React.createClass({
           <button type="submit"> Crear </button>
         </form>
         <Link to="/fabrics"> Cancelar </Link>
+        { loading ? (<p>Loading...</p>) : "" }
       </div>
     )
   },
@@ -29,9 +30,5 @@ const FabricForm = React.createClass({
     this.props.onCreateClick(fabric);
   }
 });
-
-FabricForm.contextTypes = {
-  router: React.PropTypes.object
-};
 
 export default FabricForm

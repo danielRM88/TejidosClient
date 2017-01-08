@@ -10,9 +10,10 @@ export function createFabricRequest(fabric) {
   }
 }
 
-export function createFabricSuccess() {
+export function createFabricSuccess(response) {
   return {
     type: CREATE_FABRIC_SUCCESS,
+    message: "Tela creada exitosamente",
     loading: false
   }
 }

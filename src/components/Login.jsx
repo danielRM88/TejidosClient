@@ -4,7 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 const Login = React.createClass({
   render: function () {
-    const { message, loading } = this.props
+    const { loading } = this.props
     return ( 
       <div>
         <h1>Login</h1>
@@ -13,7 +13,6 @@ const Login = React.createClass({
           <input type="password" ref="password" name="password" placeholder="password"/>
           <button type="submit"> Login </button>
         </form>
-        <p>{message}</p>
         { loading ? (<p>Loading...</p>) : "" }
       </div>
     )

@@ -1,9 +1,13 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default React.createClass({
   render: function() {
     return (
-      <h1>Fabric {this.props.params.id}</h1>
+      <div>
+        <h1>Fabric {this.props.params.id}</h1>
+        <Link to="/fabrics/new"> Neva Tela </Link>
+      </div>
     )
   }
 });
