@@ -10,7 +10,7 @@ const authMiddleware = store => next => action => {
 
       const error = (err) => {
         next(setMessage("Invalid email / password", "error"));
-        return next(loginFailure("Invalid email / password"));
+        next(loginFailure("Invalid email / password"));
       };
 
       const success = (response) => {

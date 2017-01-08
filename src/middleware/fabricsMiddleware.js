@@ -10,7 +10,7 @@ const fabricsMiddleware = store => next => action => {
 
       const error = (err) => {
         next(setMessage(err.message));
-        return next(createFabricFailure(err.message));
+        next(createFabricFailure(err.message));
       };
 
       const success = (response) => {
