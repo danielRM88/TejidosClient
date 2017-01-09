@@ -18,6 +18,8 @@ export default function fabrics(state, action) {
     case GET_FABRIC_SUCCESS:
       let getSuccess = state.setIn(['fabric'], fromJS(action.fabric));
       return getSuccess.setIn(['loading'], false);
+    case GET_FABRIC_FAILURE:
+      return state.setIn(['loading'], false);
   }
   return state;
 }

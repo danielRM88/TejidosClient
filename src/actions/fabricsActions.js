@@ -53,3 +53,31 @@ export function getFabricFailure(message) {
     message
   }
 }
+
+export const UPDATE_FABRIC_REQUEST = 'UPDATE_FABRIC_REQUEST'
+export const UPDATE_FABRIC_SUCCESS = 'UPDATE_FABRIC_SUCCESS'
+export const UPDATE_FABRIC_FAILURE = 'UPDATE_FABRIC_FAILURE'
+
+export function updateFabricRequest(id) {
+  return {
+    type: UPDATE_FABRIC_REQUEST,
+    loading: true,
+    id: id
+  }
+}
+
+export function updateFabricSuccess(response) {
+  return {
+    type: UPDATE_FABRIC_SUCCESS,
+    fabric: response,
+    loading: false
+  }
+}
+
+export function updateFabricFailure(message) {
+  return {
+    type: UPDATE_FABRIC_FAILURE,
+    loading: false,
+    message
+  }
+}

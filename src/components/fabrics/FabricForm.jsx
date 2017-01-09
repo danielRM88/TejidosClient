@@ -3,16 +3,16 @@ import {Link} from 'react-router';
 
 const FabricForm = React.createClass({
   render: function() {
-    const { loading } = this.props
+    const { loading, id, code, description, color, unitPrice } = this.props
     return (
       <div>
         <h1>Nueva Tela</h1>
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="code" placeholder="Codigo"/>
-          <input type="text" ref="description" placeholder="Descripcion"/>
-          <input type="text" ref="color" placeholder="Color"/>
-          <input type="number" ref="unitPrice" placeholder="Precio Unitario"/>
-          <button type="submit"> Crear </button>
+          <input type="text" ref="code" placeholder="Codigo" defaultValue={code}/>
+          <input type="text" ref="description" placeholder="Descripcion" defaultValue={description}/>
+          <input type="text" ref="color" placeholder="Color" defaultValue={color}/>
+          <input type="number" ref="unitPrice" placeholder="Precio Unitario" defaultValue={unitPrice}/>
+          <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
         </form>
         <Link to="/fabrics"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
@@ -22,11 +22,12 @@ const FabricForm = React.createClass({
   handleClick: function (event) {
     event.preventDefault();
     event.stopPropagation();
+    const id = this.props.id;
     const code = this.refs.code.value.trim();
     const description = this.refs.description.value.trim();
     const color = this.refs.color.value.trim();
     const unitPrice = this.refs.unitPrice.value.trim();
-    const fabric = { code, description, color, unit_price: unitPrice }
+    const fabric = { id, code, description, color, unit_price: unitPrice }
     this.props.onCreateClick(fabric);
   }
 });
