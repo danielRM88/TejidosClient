@@ -12,6 +12,7 @@ export default React.createClass({
         <p> { color } </p>
         <p> { unitPrice } </p>
         <Link to="/fabrics/new"> Neva Tela </Link>
+        <Link to="/fabrics"> Ver Telas </Link>
       </div>
     )
   }
