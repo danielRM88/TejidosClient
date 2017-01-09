@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { createFabricRequest } from '../../actions/fabricsActions';
 
 const mapStateToProps = (state) => ({
-  loading: state.get('fabrics').get('loading'),
-  message: state.get('fabrics').get('message')
+  loading: state.get('fabrics').get('loading')
 });
 
 const mapDispatchToProps = (dispatch) => ({

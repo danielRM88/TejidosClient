@@ -18,3 +18,19 @@ const createFabricService = (data, success, error) => {
 };
 
 export default createFabricService
+
+
+export function getFabricService(data, success, error) {
+  request
+    .get(config.serverUrl+'/api/v1/fabrics/'+data.id)
+    .set('Authorization', 'Bearer '+localStorage.getItem('token'))
+    .set('Content-Type', 'application/json')
+    .end((err, res) => {
+      if (err) {
+        error(err);
+      } else {
+        const response = JSON.parse(res.text);
+        success(response);
+      }
+    })
+};

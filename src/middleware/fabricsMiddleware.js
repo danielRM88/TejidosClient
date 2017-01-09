@@ -1,5 +1,6 @@
-import createFabricService from '../services/fabricsService'
-import { createFabricSuccess, createFabricFailure, CREATE_FABRIC_REQUEST, CREATE_FABRIC_SUCCESS, CREATE_FABRIC_FAILURE } from '../actions/fabricsActions';
+import createFabricService, { getFabricService } from '../services/fabricsService'
+import { createFabricSuccess, createFabricFailure, getFabricSuccess, getFabricFailure } from '../actions/fabricsActions';
+import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory } from 'react-router';
 
@@ -21,10 +22,26 @@ const fabricsMiddleware = store => next => action => {
       createFabricService(action, success, error);
       
       break
+    case GET_FABRIC_REQUEST:
+      getFabricReducerAction(next, action);
+      break
     default:
       break
   }
 
+};
+
+function getFabricReducerAction(next, action) {
+  const error = (err) => {
+    next(setMessage(err.message));
+    next(getFabricFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(getFabricSuccess(response));
+  };
+
+  getFabricService(action, success, error);
 };
 
 export default fabricsMiddleware

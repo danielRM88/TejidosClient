@@ -17,6 +17,7 @@ import { Map, fromJS }                               from 'immutable';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 import { removeMessage } from './actions/messagesActions';
+import { getFabricRequest } from './actions/fabricsActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -51,7 +52,7 @@ const routes = <Route path="/" component={App}>
                 <Route path="/fabrics" component={FabricList} />
                 <Route path="/fabrics/new" component={FabricForm} />
                 <Route path="/fabrics/:id/edit" component={FabricForm} />
-                <Route path="/fabrics/:id" component={FabricDetail} />
+                <Route path="/fabrics/:id" component={FabricDetail} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />
                 <Route path='*' component={NotFound} />
                </Route>;
 
