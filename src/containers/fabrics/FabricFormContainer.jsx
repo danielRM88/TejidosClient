@@ -5,7 +5,6 @@ import { createFabricRequest, updateFabricRequest } from '../../actions/fabricsA
 const mapStateToProps = (state) => {
 
   const fabrics = state.get('fabrics');
-  const loading = fabrics.get('loading');
   const fabric = fabrics.get('fabric');
 
   let id = ""
@@ -23,7 +22,6 @@ const mapStateToProps = (state) => {
   }
 
   return ({
-    loading,
     id, 
     code, 
     description, 

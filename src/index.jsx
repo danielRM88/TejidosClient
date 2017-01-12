@@ -7,17 +7,16 @@ import createLogger                                  from 'redux-logger';
 import reducer                                       from './reducers/reducer';
 import App                                           from './containers/AppContainer';
 import Home                                          from './components/Home';
-import FabricForm                                    from './containers/fabrics/FabricFormContainer';
-import FabricList                                    from './components/fabrics/FabricList';
+import FabricNew                                     from './containers/fabrics/FabricNewContainer';
+import FabricEdit                                    from './containers/fabrics/FabricEditContainer';
+import FabricList                                    from './containers/fabrics/FabricListContainer';
 import FabricDetail                                  from './containers/fabrics/FabricDetailContainer';
 import authMiddleware                                from './middleware/authMiddleware';
 import fabricsMiddleware                             from './middleware/fabricsMiddleware';
 import { Map, fromJS }                               from 'immutable';
-
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
-
-import { removeMessage } from './actions/messagesActions';
-import { createFabricSuccess, getFabricRequest } from './actions/fabricsActions';
+import { syncHistoryWithStore, routerReducer }       from 'react-router-redux';
+import { removeMessage }                             from './actions/messagesActions';
+import { createFabricSuccess, getFabricRequest, getFabricsRequest }     from './actions/fabricsActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -49,9 +48,9 @@ history.listen(() => { store.dispatch(removeMessage()) });
 
 const routes = <Route path="/" component={App}>
                 <IndexRoute component={Home} />
-                <Route path="/fabrics" component={FabricList} />
-                <Route path="/fabrics/new" component={FabricForm} onEnter={ () => store.dispatch(createFabricSuccess()) } />
-                <Route path="/fabrics/:id/edit" component={FabricForm} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />
+                <Route path="/fabrics" component={FabricList} onEnter={ () => store.dispatch(getFabricsRequest()) }/>
+                <Route path="/fabrics/new" component={FabricNew} onEnter={ () => store.dispatch(createFabricSuccess()) } />
+                <Route path="/fabrics/:id/edit" component={FabricEdit} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />
                 <Route path="/fabrics/:id" component={FabricDetail} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />
                 <Route path='*' component={NotFound} />
                </Route>;

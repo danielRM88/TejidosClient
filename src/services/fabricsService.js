@@ -17,8 +17,20 @@ const createFabricService = (data, success, error) => {
     })
 };
 
-export default createFabricService
-
+export function getFabricsService(data, success, error) {
+  request
+    .get(config.serverUrl+'/api/v1/fabrics')
+    .set('Authorization', 'Bearer '+localStorage.getItem('token'))
+    .set('Content-Type', 'application/json')
+    .end((err, res) => {
+      if (err) {
+        error(err);
+      } else {
+        const response = JSON.parse(res.text);
+        success(response);
+      }
+    })
+};
 
 export function getFabricService(data, success, error) {
   request
@@ -34,3 +46,21 @@ export function getFabricService(data, success, error) {
       }
     })
 };
+
+export function updateFabricService(data, success, error) {
+  request
+    .put(config.serverUrl+'/api/v1/fabrics/'+data.fabric.id)
+    .set('Authorization', 'Bearer '+localStorage.getItem('token'))
+    .set('Content-Type', 'application/json')
+    .send({ fabric: data.fabric })
+    .end((err, res) => {
+      if (err) {
+        error(err);
+      } else {
+        // const response = JSON.parse(res.text);
+        success(null);
+      }
+    })
+};
+
+export default createFabricService

@@ -1,14 +1,16 @@
-import createFabricService, { getFabricService } from '../services/fabricsService'
+import createFabricService, { getFabricService, updateFabricService, getFabricsService } from '../services/fabricsService'
 import { createFabricSuccess, 
          createFabricFailure, 
          getFabricSuccess, 
-         getFabricFailure, 
+         getFabricFailure,
          updateFabricSuccess, 
-         updateFabricFailure 
+         updateFabricFailure, 
+         getFabricsSuccess,
+         getFabricsFailure 
        } from '../actions/fabricsActions';
-import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST } from '../actions/fabricsActions';
+import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
-import { browserHistory } from 'react-router';
+import { browserHistory, hashHistory } from 'react-router';
 
 const fabricsMiddleware = store => next => action => {
   next(action)
@@ -22,24 +24,40 @@ const fabricsMiddleware = store => next => action => {
 
       const success = (response) => {
         next(createFabricSuccess(response));
-        browserHistory.push('/fabrics/'+response.id);
+        hashHistory.push('/fabrics/'+response.id);
       };
 
       createFabricService(action, success, error);
       
       break
     case GET_FABRIC_REQUEST:
-      getFabricReducerAction(next, action);
+      getFabricMiddlewareAction(next, action);
       break
     case UPDATE_FABRIC_REQUEST:
-      updateFabricReducerAction(next, action);
+      updateFabricMiddlewareAction(next, action);
+      break
+    case GET_FABRICS_REQUEST:
+      getFabricsMiddlewareAction(next, action);
       break
     default:
       break
   }
 };
 
-function getFabricReducerAction(next, action) {
+function getFabricsMiddlewareAction(next, action) {
+  const error = (err) => {
+    next(setMessage(err.message));
+    next(getFabricsFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(getFabricsSuccess(response));
+  };
+
+  getFabricsService(action, success, error);
+};
+
+function getFabricMiddlewareAction(next, action) {
   const error = (err) => {
     next(setMessage(err.message));
     next(getFabricFailure(err.message));
@@ -52,17 +70,18 @@ function getFabricReducerAction(next, action) {
   getFabricService(action, success, error);
 };
 
-function updateFabricReducerAction(next, action) {
+function updateFabricMiddlewareAction(next, action) {
   const error = (err) => {
     next(setMessage(err.message));
     next(updateFabricFailure(err.message));
   };
 
-  const success = (response) => {
-    next(updateFabricSuccess(response));
+  const success = () => {
+    next(updateFabricSuccess());
+    hashHistory.push('/fabrics');
   };
 
-  getFabricService(action, success, error);
+  updateFabricService(action, success, error);
 };
 
 export default fabricsMiddleware
