@@ -18,7 +18,7 @@ const fabricsMiddleware = store => next => action => {
     case CREATE_FABRIC_REQUEST:
 
       const error = (err) => {
-        next(setMessage(err.message));
+        next(setMessage(err.message, "error"));
         next(createFabricFailure(err.message));
       };
 
@@ -77,6 +77,7 @@ function updateFabricMiddlewareAction(next, action) {
   };
 
   const success = () => {
+    next(setMessage("Tela actualizada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
     next(updateFabricSuccess());
     hashHistory.push('/fabrics');
   };
