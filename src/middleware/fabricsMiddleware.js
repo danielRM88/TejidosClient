@@ -1,14 +1,17 @@
-import createFabricService, { getFabricService, updateFabricService, getFabricsService } from '../services/fabricsService'
+import createFabricService, { getFabricService, updateFabricService, getFabricsService, deleteFabricService } from '../services/fabricsService'
 import { createFabricSuccess, 
          createFabricFailure, 
          getFabricSuccess, 
          getFabricFailure,
          updateFabricSuccess, 
          updateFabricFailure, 
+         getFabricsRequest,
          getFabricsSuccess,
-         getFabricsFailure 
+         getFabricsFailure,
+         deleteFabricSuccess, 
+         deleteFabricFailure
        } from '../actions/fabricsActions';
-import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST } from '../actions/fabricsActions';
+import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST, DELETE_FABRIC_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
 
@@ -23,8 +26,11 @@ const fabricsMiddleware = store => next => action => {
       };
 
       const success = (response) => {
+        next(setMessage("Tela creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
         next(createFabricSuccess(response));
-        hashHistory.push('/fabrics/'+response.id);
+        if (action.redirect) {
+          hashHistory.push('/fabrics/'+response.id);
+        }
       };
 
       createFabricService(action, success, error);
@@ -38,6 +44,9 @@ const fabricsMiddleware = store => next => action => {
       break
     case GET_FABRICS_REQUEST:
       getFabricsMiddlewareAction(next, action);
+      break
+    case DELETE_FABRIC_REQUEST:
+      deleteFabricMiddlewareAction(next, action);
       break
     default:
       break
@@ -79,10 +88,29 @@ function updateFabricMiddlewareAction(next, action) {
   const success = () => {
     next(setMessage("Tela actualizada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
     next(updateFabricSuccess());
-    hashHistory.push('/fabrics');
+    if (action.redirect) {
+      hashHistory.push('/fabrics/'+action.fabric.id);
+    }
   };
 
   updateFabricService(action, success, error);
+};
+
+function deleteFabricMiddlewareAction(next, action) {
+  const error = (err) => {
+    next(setMessage(err.message));
+    next(deleteFabricFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(setMessage("Tela eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(deleteFabricSuccess());
+    if (action.redirect) {
+      hashHistory.push('/fabrics');
+    }
+  };
+
+  deleteFabricService(action, success, error);
 };
 
 export default fabricsMiddleware

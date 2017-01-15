@@ -48,7 +48,10 @@ history.listen(() => { store.dispatch(removeMessage()) });
 
 const routes = <Route path="/" component={App}>
                 <IndexRoute component={Home} />
-                <Route path="/fabrics" component={FabricList} onEnter={ () => store.dispatch(getFabricsRequest()) }/>
+                <Route path="/fabrics" 
+                        component={FabricList} 
+                        onEnter={ () => store.dispatch(getFabricsRequest()) } 
+                        onChange={ () => store.dispatch(getFabricsRequest()) }/>
                 <Route path="/fabrics/new" component={FabricNew} onEnter={ () => store.dispatch(createFabricSuccess()) } />
                 <Route path="/fabrics/:id/edit" component={FabricEdit} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />
                 <Route path="/fabrics/:id" component={FabricDetail} onEnter={(route) => store.dispatch(getFabricRequest(route.params.id))} />

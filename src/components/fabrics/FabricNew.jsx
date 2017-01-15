@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import FabricForm from '../../containers/fabrics/FabricFormContainer';
+import FabricForm from './FabricForm';
 
 export default React.createClass({
   render: function() {
@@ -8,7 +8,7 @@ export default React.createClass({
     return (
       <div>
         <h1>Nueva Tela</h1>
-        <FabricForm />
+        <FabricForm onActionClick={this.props.onCreateClick}/>
         <Link to="/fabrics"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
       </div>

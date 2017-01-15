@@ -3,10 +3,18 @@ import React from 'react';
 const FabricForm = React.createClass({
   componentDidUpdate: function (prevProps, prevState) {
     const { id, code, description, color, unitPrice } = this.props
-    this.refs.code.value = code
-    this.refs.description.value = description
-    this.refs.color.value = color
-    this.refs.unitPrice.value = unitPrice
+    if(code) {
+      this.refs.code.value = code
+    }
+    if(description){
+      this.refs.description.value = description
+    }
+    if(color){
+      this.refs.color.value = color
+    }
+    if(unitPrice){
+      this.refs.unitPrice.value = unitPrice
+    }
   },
   render: function() {
     const { id, code, description, color, unitPrice } = this.props
@@ -29,11 +37,7 @@ const FabricForm = React.createClass({
     const color = this.refs.color.value.trim();
     const unitPrice = this.refs.unitPrice.value.trim();
     const fabric = { id, code, description, color, unit_price: unitPrice }
-    if(id) {
-      this.props.onUpdateClick(fabric);
-    } else {
-      this.props.onCreateClick(fabric);
-    }
+    this.props.onActionClick(fabric);
   }
 });
 
