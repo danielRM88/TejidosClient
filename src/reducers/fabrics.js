@@ -26,7 +26,6 @@ export default function fabrics(state, action) {
     case UPDATE_FABRIC_REQUEST:
       return state.setIn(['loading'], true);
     case UPDATE_FABRIC_SUCCESS:
-      // let getUpdateSuccess = state.deleteIn(['fabric'], fromJS(action.fabric));
       return state.setIn(['loading'], false);
     case UPDATE_FABRIC_FAILURE:
       return state.setIn(['loading'], false);

@@ -19,22 +19,7 @@ const fabricsMiddleware = store => next => action => {
   next(action)
   switch (action.type) {
     case CREATE_FABRIC_REQUEST:
-
-      const error = (err) => {
-        next(setMessage(err.message, "error"));
-        next(createFabricFailure(err.message));
-      };
-
-      const success = (response) => {
-        next(setMessage("Tela creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
-        next(createFabricSuccess(response));
-        if (action.redirect) {
-          hashHistory.push('/fabrics/'+response.id);
-        }
-      };
-
-      createFabricService(action, success, error);
-      
+      createFabricMiddlewareAction(next, action);
       break
     case GET_FABRIC_REQUEST:
       getFabricMiddlewareAction(next, action);
@@ -52,6 +37,23 @@ const fabricsMiddleware = store => next => action => {
       break
   }
 };
+
+function createFabricMiddlewareAction(next, action) {
+  const error = (err) => {
+    next(setMessage(err.message, "error"));
+    next(createFabricFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(setMessage("Tela creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(createFabricSuccess(response));
+    if (action.redirect) {
+      hashHistory.push('/fabrics/'+response.id);
+    }
+  };
+
+  createFabricService(action, success, error);
+}
 
 function getFabricsMiddlewareAction(next, action) {
   const error = (err) => {
