@@ -11,6 +11,7 @@ import { createFabricSuccess,
          deleteFabricSuccess, 
          deleteFabricFailure
        } from '../actions/fabricsActions';
+import { logoutSuccess } from '../actions/authActions';       
 import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST, DELETE_FABRIC_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
@@ -40,6 +41,9 @@ const fabricsMiddleware = store => next => action => {
 
 function createFabricMiddlewareAction(next, action) {
   const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
     next(setMessage(err.message, "error"));
     next(createFabricFailure(err.message));
   };
@@ -57,6 +61,9 @@ function createFabricMiddlewareAction(next, action) {
 
 function getFabricsMiddlewareAction(next, action) {
   const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
     next(setMessage(err.message));
     next(getFabricsFailure(err.message));
   };
@@ -70,6 +77,9 @@ function getFabricsMiddlewareAction(next, action) {
 
 function getFabricMiddlewareAction(next, action) {
   const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
     next(setMessage(err.message));
     next(getFabricFailure(err.message));
   };
@@ -83,6 +93,9 @@ function getFabricMiddlewareAction(next, action) {
 
 function updateFabricMiddlewareAction(next, action) {
   const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
     next(setMessage(err.message));
     next(updateFabricFailure(err.message));
   };
@@ -100,6 +113,9 @@ function updateFabricMiddlewareAction(next, action) {
 
 function deleteFabricMiddlewareAction(next, action) {
   const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
     next(setMessage(err.message));
     next(deleteFabricFailure(err.message));
   };

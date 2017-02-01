@@ -1,7 +1,7 @@
 import authService from '../services/authService'
 import { loginSuccess, loginFailure, logoutSuccess, LOGIN_REQUEST, LOGOUT_REQUEST } from '../actions/authActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 const authMiddleware = store => next => action => {
   next(action)
@@ -17,6 +17,7 @@ const authMiddleware = store => next => action => {
         localStorage.setItem('token', response.auth_token)
         next(removeMessage());
         next(loginSuccess(response));
+        hashHistory.push('/');
       };
 
       authService(action, success, error);
