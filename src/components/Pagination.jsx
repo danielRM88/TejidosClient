@@ -83,12 +83,16 @@ export default React.createClass({
         }
       }
     }
-    return (
-      <div>
-        <button type="button" className="btn btn-default" onClick={(event) => goToPage(currentPage-1)}>Previous</button>
-        {pages}
-        <button type="button" className="btn btn-default" onClick={(event) => goToPage(currentPage+1)}>Next</button>
-      </div>
-    )
+    if(totalPages > 1) {
+      return (
+        <div>
+          <button type="button" className="btn btn-default" onClick={(event) => goToPage(currentPage-1)}>Previous</button>
+          {pages}
+          <button type="button" className="btn btn-default" onClick={(event) => goToPage(currentPage+1)}>Next</button>
+        </div>
+      )
+    } else {
+      return <div></div>
+    }
   }
 })

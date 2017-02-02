@@ -26,7 +26,7 @@ export default React.createClass({
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Catalogo <span className="caret"></span></a>
                   <ul className="dropdown-menu">
                     <li><Link to="/fabrics"> Telas </Link></li>
-                    <li><Link to="/fabrics"> Clientes </Link></li>
+                    <li><Link to="/clients"> Clientes </Link></li>
                     <li><Link to="/fabrics"> Proveedores </Link></li>
                   </ul>
                 </li>
