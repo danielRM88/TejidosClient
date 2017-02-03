@@ -1,5 +1,5 @@
 import ClientList from '../../components/clients/ClientList'
-import { deleteClient, getClientRequest } from '../../actions/clientsActions';
+import { deleteClient, getClientsRequest } from '../../actions/clientsActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {

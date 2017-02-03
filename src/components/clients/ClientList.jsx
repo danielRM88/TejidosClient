@@ -60,9 +60,9 @@ export default React.createClass({
       )
     }
   },
-  handleClick: function(event, fabric_id) {
+  handleClick: function(event, client_id) {
     event.preventDefault();
     event.stopPropagation();
-    this.props.onDeleteClick(fabric_id);
+    this.props.onDeleteClick(client_id);
   }
 });
