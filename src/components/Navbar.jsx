@@ -27,7 +27,7 @@ export default React.createClass({
                   <ul className="dropdown-menu">
                     <li><Link to="/fabrics"> Telas </Link></li>
                     <li><Link to="/clients"> Clientes </Link></li>
-                    <li><Link to="/fabrics"> Proveedores </Link></li>
+                    <li><Link to="/suppliers"> Proveedores </Link></li>
                   </ul>
                 </li>
               </ul>

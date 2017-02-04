@@ -121,7 +121,7 @@ function deleteClientMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Tela eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage("Cliente eliminado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
     next(deleteClientSuccess());
     if (action.redirect) {
       hashHistory.push('/clients');

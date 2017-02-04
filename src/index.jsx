@@ -17,14 +17,21 @@ import ClientEdit                                    from './containers/clients/
 import ClientList                                    from './containers/clients/ClientListContainer';
 import ClientDetail                                  from './containers/clients/ClientDetailContainer';
 
+import SupplierNew                                   from './containers/suppliers/SupplierNewContainer';
+import SupplierEdit                                  from './containers/suppliers/SupplierEditContainer'
+import SupplierList                                  from './containers/suppliers/SupplierListContainer';
+import SupplierDetail                                from './containers/suppliers/SupplierDetailContainer';
+
 import authMiddleware                                from './middleware/authMiddleware';
 import fabricsMiddleware                             from './middleware/fabricsMiddleware';
 import clientsMiddleware                             from './middleware/clientsMiddleware';
+import suppliersMiddleware                           from './middleware/suppliersMiddleware';
 import { Map, fromJS }                               from 'immutable';
 import { syncHistoryWithStore, routerReducer }       from 'react-router-redux';
 import { removeMessage }                             from './actions/messagesActions';
 import { createFabricSuccess, getFabricRequest, getFabricsRequest }     from './actions/fabricsActions';
 import { createClientSuccess, getClientRequest, getClientsRequest }     from './actions/clientsActions';
+import { createSupplierSuccess, getSupplierRequest, getSuppliersRequest }     from './actions/suppliersActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -32,8 +39,8 @@ const NotFound = () => (
 
 let token = localStorage.getItem('token') || null
 const logger = createLogger();
-const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), token, loading: false }, fabrics: {}, clients: {} });
-const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware, fabricsMiddleware, clientsMiddleware));
+const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), token, loading: false }, fabrics: {}, clients: {}, suppliers: {} });
+const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware, fabricsMiddleware, clientsMiddleware, suppliersMiddleware));
 
 /* Create enhanced history object for router */
 const createSelectLocationState = () => {
@@ -71,6 +78,14 @@ const routes = <Route path="/" component={App}>
                         onChange={ () => store.dispatch(getClientsRequest()) }/>
                 <Route path="/clients/:id" component={ClientDetail} onEnter={(route) => store.dispatch(getClientRequest(route.params.id))} />
                 <Route path="/clients/:id/edit" component={ClientEdit} onEnter={(route) => store.dispatch(getClientRequest(route.params.id))} />
+
+                <Route path="/suppliers/new" component={SupplierNew} onEnter={ () => store.dispatch(createSupplierSuccess()) } />
+                <Route path="/suppliers" 
+                        component={SupplierList} 
+                        onEnter={ () => store.dispatch(getSuppliersRequest()) } 
+                        onChange={ () => store.dispatch(getSuppliersRequest()) }/>
+                <Route path="/suppliers/:id" component={SupplierDetail} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
+                <Route path="/suppliers/:id/edit" component={SupplierEdit} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
 
                 <Route path='*' component={NotFound} />
                </Route>;
