@@ -22,11 +22,13 @@ export function getSuppliersService(data, success, error) {
   if (!page) {
     page = 1;
   }
+  let typeId = data.typeId;
+  let numberId = data.numberId;
   request
     .get(config.serverUrl+'/api/v1/suppliers')
     .set('Authorization', 'Bearer '+localStorage.getItem('token'))
     .set('Content-Type', 'application/json')
-    .query({ page: page })
+    .query({ page: page, type_id: typeId, number_id: numberId })
     .end((err, res) => {
       if (err) {
         error(err);

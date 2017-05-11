@@ -3,6 +3,7 @@ import auth from './auth'
 import fabrics from './fabrics'
 import clients from './clients'
 import suppliers from './suppliers'
+import purchases from './purchases'
 import routerReducer from './routerReducer'
 import messages from './messages'
 
@@ -11,6 +12,7 @@ export default combineReducers({
   fabrics,
   clients,
   suppliers,
+  purchases,
   messages,
   routing: routerReducer
 })

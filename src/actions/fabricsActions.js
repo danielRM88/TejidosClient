@@ -103,10 +103,11 @@ export const GET_FABRICS_REQUEST = 'GET_FABRICS_REQUEST'
 export const GET_FABRICS_SUCCESS = 'GET_FABRICS_SUCCESS'
 export const GET_FABRICS_FAILURE = 'GET_FABRICS_FAILURE'
 
-export function getFabricsRequest(page) {
+export function getFabricsRequest(page, code = null) {
   return {
     type: GET_FABRICS_REQUEST,
     loading: true,
+    code,
     page
   }
 }

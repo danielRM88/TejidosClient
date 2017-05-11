@@ -103,10 +103,12 @@ export const GET_SUPPLIERS_REQUEST = 'GET_SUPPLIERS_REQUEST'
 export const GET_SUPPLIERS_SUCCESS = 'GET_SUPPLIERS_SUCCESS'
 export const GET_SUPPLIERS_FAILURE = 'GET_SUPPLIERS_FAILURE'
 
-export function getSuppliersRequest(page) {
+export function getSuppliersRequest(page, typeId = null, numberId = null) {
   return {
     type: GET_SUPPLIERS_REQUEST,
     loading: true,
+    typeId,
+    numberId,
     page
   }
 }

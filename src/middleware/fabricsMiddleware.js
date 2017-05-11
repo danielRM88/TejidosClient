@@ -11,7 +11,7 @@ import { createFabricSuccess,
          deleteFabricSuccess, 
          deleteFabricFailure
        } from '../actions/fabricsActions';
-import { logoutSuccess } from '../actions/authActions';       
+import { logoutSuccess } from '../actions/authActions';
 import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST, DELETE_FABRIC_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
