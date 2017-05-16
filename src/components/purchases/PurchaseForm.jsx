@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
-    return { supplierId: null, label: null, inventories: [], purchaseDate: moment() };
+    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0 };
   },
   componentDidMount: function () {
     this.addInventory(null, 0);
@@ -135,12 +135,12 @@ const PurchaseForm = React.createClass({
                             let invs = this.state.inventories.map( (inv) => {
                               if(inv.index === inventory.index) {
                                 inv.fabricCode = value;
-                                inv.fabricId = value.fabric.id;
-                                inv.fabricUnitPrice = value.fabric.unit_price;
-                                this.refs[inventory.index+"_fabricUnitPrice"].value = value.fabric.unit_price;
+                                inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
+                                inv.fabricUnitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
+                                this.refs[inventory.index+"_fabricUnitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
 
-                                return inv;
                               }
+                              return inv;
                             });
                             this.setState({
                               inventories: invs
@@ -156,33 +156,58 @@ const PurchaseForm = React.createClass({
                   {/*<input type="text" ref={inventory.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, inventory.index) } onKeyDown={ (event) => this.handleTabFirstField(event, inventory.index) }/> */}
                   <input type="text" ref={inventory.index+"_pieces"} placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, inventory.index) }/>
                   <input type="text" ref={inventory.index+"_amount"} placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, inventory.index) }/>
-                  <input type="text" ref={inventory.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }/>
-                  <input type="text" ref={inventory.index+"_fabricUnitPrice"} placeholder="Precio Venta" defaultValue={fabricUnitPrice} onChange={ (event) => this.onSalePriceChanged(event, inventory.index) }/>
+                  {/*<input type="text" ref={inventory.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }/>*/}
+                  <select ref={inventory.index+"_unit"} defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }>
+                    <option value="m">Metros</option>
+                    <option value="kg">Kgs.</option>
+                  </select>
                   <input type="text" ref={inventory.index+"_unitPrice"} placeholder="Precio Costo" defaultValue={unitPrice} onChange={ (event) => this.onUnitPriceChanged(event, inventory.index) }/>
+                  <input type="text" ref={inventory.index+"_fabricUnitPrice"} placeholder="Precio Venta" defaultValue={fabricUnitPrice} onChange={ (event) => this.onSalePriceChanged(event, inventory.index) }/>
                 </div>
-                <button onKeyDown={ (event) => this.handleTabFinalField(event, inventory.index) } onClick={ (event) => this.removeInventory(event, inventory.index) }>Eliminar tela</button>
+                <button type="button" onKeyDown={ (event) => this.handleTabFinalField(event, inventory.index) } onClick={ (event) => this.removeInventory(event, inventory.index) }>Eliminar tela</button>
               </div>
             )
           })
         }
         <hr/>
-        <select ref="formOfPayent" defaultValue="transferencia">
+        {/*<select ref="formOfPayent" defaultValue="transferencia">
           <option value="transferencia">Trasferencia</option>
           <option value="cheque">Cheque</option>
           <option value="deposito">Deposito</option>
           <option value="efectivo">Efectivo</option>
-        </select>
-        
-        <select ref="iva" defaultValue="1">
-          <option value="2">0 %</option>
-          <option value="1">12 %</option>
-        </select>
-
-        <p ref="subtotal">Subtotal: {subtotal}</p>
+        </select>*/}
+        <p ref="subtotal">Subtotal: {this.state.subtotal}</p>
+        <input type="text" ref="vat" placeholder="% IVA" defaultValue={12} onChange={ (event) => this.updateTotals() }/>
+        <p ref="total">Total: {this.state.total}</p>
         <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
         <button onClick={(event) => this.addInventory(event, maxIndex+1)}>Agregar tela</button>
       </form>
     )
+  },
+  updateTotals: function () {
+    let subtotal = 0;
+    let total = 0;
+    this.state.inventories.map((inventory) => {
+      let amount = inventory.amount;
+      let unitPrice = inventory.unitPrice;
+      let added = 0;
+
+      if(amount != undefined && unitPrice != undefined) {
+        added = amount*unitPrice;
+      }
+
+      subtotal += added
+    });
+    let vat = this.refs.vat.value;
+
+    if(vat != undefined) {
+      total = (subtotal+(subtotal*vat/100));
+    }
+
+    this.setState({
+      subtotal,
+      total
+    });
   },
   onUnitPriceChanged: function (event, index) {
     let inventories = this.state.inventories.map( (inventory) => {
@@ -195,6 +220,7 @@ const PurchaseForm = React.createClass({
     this.setState({
       inventories
     });
+    this.updateTotals();
   },
   onSalePriceChanged: function (event, index) {
     let inventories = this.state.inventories.map( (inventory) => {
@@ -231,6 +257,7 @@ const PurchaseForm = React.createClass({
     this.setState({
       inventories
     });
+    this.updateTotals();
   },
   onPiecesChanged: function (event, index) {
     let inventories = this.state.inventories.map( (inventory) => {
@@ -287,17 +314,17 @@ const PurchaseForm = React.createClass({
     event.stopPropagation();
     const id = this.props.id;
     const purchaseNumber = this.refs.purchaseNumber.value.trim();
-    const supplierId = this.state.supplierId.value;
-    const purchaseDate = this.state.purchaseDate.value;
-    const ivaId = this.refs.iva.value;
-    const formOfPayent = this.refs.formOfPayent.value;
+    const supplierId = this.state.supplierId == undefined ? undefined : this.state.supplierId.value;
+    const purchaseDate = this.state.purchaseDate.toJSON();
+    const vat = this.refs.vat.value;
+    const formOfPayent = "transferencia";//this.refs.formOfPayent.value;
     const subtotal = this.refs.subtotal.value;
 
     let inventories = this.state.inventories.map( (inventory) => {
       return { fabric_id: inventory.fabricId, pieces: inventory.pieces, amount: inventory.amount, unit: inventory.unit, unit_price: inventory.unitPrice }
     });
 
-    const purchase = { id, purchase_number: purchaseNumber, supplier_id: supplierId, purchase_date: purchaseDate, iva_id: ivaId, form_of_payment: formOfPayent, subtotal, inventories_attributes: inventories }
+    const purchase = { id, purchase_number: purchaseNumber, supplier_id: supplierId, purchase_date: purchaseDate, vat: vat, form_of_payment: formOfPayent, subtotal, inventories_attributes: inventories }
     this.props.onActionClick(purchase);
   },
   addInventory: function (event, index, preventDefault = true) {
@@ -306,7 +333,7 @@ const PurchaseForm = React.createClass({
       event.stopPropagation();
     }
     let inventories = this.state.inventories;
-    inventories.push({index: index});
+    inventories.push({index: index, unit: "m"});
     this.setState({
       inventories
     });
@@ -321,7 +348,7 @@ const PurchaseForm = React.createClass({
 
     this.setState({
       inventories: filtered
-    });
+    }, this.updateTotals);
   }
 });
 
