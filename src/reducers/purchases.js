@@ -8,6 +8,9 @@ import { CREATE_PURCHASE_REQUEST,
          UPDATE_PURCHASE_REQUEST,
          UPDATE_PURCHASE_SUCCESS,
          UPDATE_PURCHASE_FAILURE,
+         GET_PURCHASES_REQUEST, 
+         GET_PURCHASES_SUCCESS, 
+         GET_PURCHASES_FAILURE, 
          ADD_INVENTORY, 
          REMOVE_INVENTORY, 
          ADD_SUPPLIER } from '../actions/purchasesActions';
@@ -38,6 +41,15 @@ export default function purchases(state, action) {
     case UPDATE_PURCHASE_SUCCESS:
       return state.setIn(['loading'], false);
     case UPDATE_PURCHASE_FAILURE:
+      return state.setIn(['loading'], false);
+    case GET_PURCHASES_REQUEST:
+      return state.setIn(['loading'], true);
+    case GET_PURCHASES_SUCCESS:
+      let getListSuccess = state.setIn(['list', 'purchases'], fromJS(action.purchases));
+      getListSuccess = getListSuccess.setIn(['list', 'totalPages'], fromJS(action.totalPages));
+      getListSuccess = getListSuccess.setIn(['list', 'currentPage'], fromJS(action.currentPage));
+      return getListSuccess.setIn(['loading'], false);
+    case GET_PURCHASES_FAILURE:
       return state.setIn(['loading'], false);
     case ADD_INVENTORY:
       return state.updateIn(['purchase', 'inventories'], arr => arr.push(action.inventory))

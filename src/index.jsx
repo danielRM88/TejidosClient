@@ -24,6 +24,7 @@ import SupplierDetail                                from './containers/supplier
 
 import PurchaseNew                                   from './containers/purchases/PurchaseNewContainer';
 import PurchaseEdit                                  from './containers/purchases/PurchaseEditContainer';
+import PurchaseList                                  from './containers/purchases/PurchaseListContainer';
 
 import authMiddleware                                from './middleware/authMiddleware';
 import fabricsMiddleware                             from './middleware/fabricsMiddleware';
@@ -36,7 +37,7 @@ import { removeMessage }                             from './actions/messagesAct
 import { createFabricSuccess, getFabricRequest, getFabricsRequest }     from './actions/fabricsActions';
 import { createClientSuccess, getClientRequest, getClientsRequest }     from './actions/clientsActions';
 import { createSupplierSuccess, getSupplierRequest, getSuppliersRequest }     from './actions/suppliersActions';
-import { createPurchaseSuccess, resetPurchase, getPurchaseRequest }     from './actions/purchasesActions';
+import { createPurchaseSuccess, resetPurchase, getPurchaseRequest, getPurchasesRequest }     from './actions/purchasesActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -48,7 +49,7 @@ const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), tok
                             fabrics: {}, 
                             clients: {}, 
                             suppliers: {}, 
-                            purchases: { list: [], purchase: {inventories: [], suppliers: []}, loading: false } });
+                            purchases: {} });
 const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware, fabricsMiddleware, clientsMiddleware, suppliersMiddleware, purchasesMiddleware));
 
 /* Create enhanced history object for router */
@@ -96,6 +97,10 @@ const routes = <Route path="/" component={App}>
                 <Route path="/suppliers/:id" component={SupplierDetail} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
                 <Route path="/suppliers/:id/edit" component={SupplierEdit} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
 
+                <Route path="/purchases" 
+                        component={PurchaseList} 
+                        onEnter={ () => store.dispatch(getPurchasesRequest()) } 
+                        onChange={ () => store.dispatch(getPurchasesRequest()) }/>
                 <Route path="/purchases/new" component={PurchaseNew} onEnter={ () => store.dispatch(createPurchaseSuccess()) }/>
                 <Route path="/purchases/:id/edit" component={PurchaseEdit} onEnter={(route) => store.dispatch(getPurchaseRequest(route.params.id))} />
 

@@ -87,6 +87,37 @@ export function updatePurchaseFailure(message) {
   }
 }
 
+export const GET_PURCHASES_REQUEST = 'GET_PURCHASES_REQUEST'
+export const GET_PURCHASES_SUCCESS = 'GET_PURCHASES_SUCCESS'
+export const GET_PURCHASES_FAILURE = 'GET_PURCHASES_FAILURE'
+
+export function getPurchasesRequest(page, code = null) {
+  return {
+    type: GET_PURCHASES_REQUEST,
+    loading: true,
+    code,
+    page
+  }
+}
+
+export function getPurchasesSuccess(response) {
+  return {
+    type: GET_PURCHASES_SUCCESS,
+    purchases: response.purchases,
+    totalPages: response.total_pages,
+    currentPage: response.current_page,
+    loading: false
+  }
+}
+
+export function getPurchasesFailure(message) {
+  return {
+    type: GET_PURCHASES_FAILURE,
+    loading: false,
+    message
+  }
+}
+
 export function resetPurchase() {
   return {
     type: RESET_PURCHASE

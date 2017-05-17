@@ -1,12 +1,15 @@
-import createPurchaseService, { getPurchaseService, updatePurchaseService } from '../services/purchasesService'
+import createPurchaseService, { getPurchaseService, updatePurchaseService, getPurchasesService } from '../services/purchasesService'
 import { createPurchaseSuccess, 
          createPurchaseFailure,
          getPurchaseSuccess, 
          getPurchaseFailure,
          updatePurchaseSuccess, 
          updatePurchaseFailure,
+         getPurchasesRequest,
+         getPurchasesSuccess,
+         getPurchasesFailure
        } from '../actions/purchasesActions';
-import { CREATE_PURCHASE_REQUEST, GET_PURCHASE_REQUEST, UPDATE_PURCHASE_REQUEST } from '../actions/purchasesActions';
+import { CREATE_PURCHASE_REQUEST, GET_PURCHASE_REQUEST, UPDATE_PURCHASE_REQUEST, GET_PURCHASES_REQUEST } from '../actions/purchasesActions';
 import { logoutSuccess } from '../actions/authActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
@@ -22,6 +25,9 @@ const purchasesMiddleware = store => next => action => {
       break
     case UPDATE_PURCHASE_REQUEST:
       updatePurchaseMiddlewareAction(next, action);
+      break
+    case GET_PURCHASES_REQUEST:
+      getPurchasesMiddlewareAction(next, action);
       break
     default:
       break
@@ -63,6 +69,22 @@ function getPurchaseMiddlewareAction(next, action) {
   };
 
   getPurchaseService(action, success, error);
+};
+
+function getPurchasesMiddlewareAction(next, action) {
+  const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
+    next(setMessage(err.message));
+    next(getPurchasesFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(getPurchasesSuccess(response));
+  };
+
+  getPurchasesService(action, success, error);
 };
 
 function updatePurchaseMiddlewareAction(next, action) {

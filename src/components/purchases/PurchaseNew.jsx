@@ -9,7 +9,7 @@ export default React.createClass({
       <div>
         <h1>Nueva Compra</h1>
         <PurchaseForm subtotal="10" onActionClick={this.props.onCreateClick}/>
-        <Link to="/"> Cancelar </Link>
+        <Link to="/purchases"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
       </div>
     )

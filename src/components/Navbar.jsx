@@ -20,7 +20,7 @@ export default React.createClass({
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li> <Link to="/"> Home </Link> </li>
-                <li> <Link to="/purchases/new"> Compras </Link> </li>
+                <li> <Link to="/purchases"> Compras </Link> </li>
                 <li> <Link to="/fabrics"> Facturas </Link> </li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Catalogo <span className="caret"></span></a>

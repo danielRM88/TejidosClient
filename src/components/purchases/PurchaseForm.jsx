@@ -6,15 +6,15 @@ import moment from 'moment';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
-    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: undefined };
+    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: 12 };
   },
   componentDidMount: function () {
     if(this.props.id == undefined) {
       this.addInventory(null, 0);
     }
   },
-  componentDidUpdate: function (prevProps, prevState) {
-    const { id, purchaseNumber, supplierTypeId, supplierNumberId, supplierName, supplierId, purchaseDate, vat, subtotal, inventories } = this.props
+  componentWillReceiveProps: function (nextProps) {
+    const { id, purchaseNumber, supplierTypeId, supplierNumberId, supplierName, supplierId, purchaseDate, vat, subtotal, inventories } = nextProps
     if(purchaseNumber) {
       this.refs.purchaseNumber.value = purchaseNumber
     
@@ -22,43 +22,34 @@ const PurchaseForm = React.createClass({
         this.refs.purchaseDate.value = purchaseDate
       }
       if(vat){
-        let v = this.state.vat;
-        if(v == undefined) {
-          this.setState({
-            vat: vat
-          });
-        }
+        this.setState({
+          vat: vat
+        });
       }
       if(subtotal){
         this.refs.subtotal.value = subtotal
       }
       if(supplierId && supplierTypeId && supplierNumberId && supplierName) {
-        let supplier = this.state.supplierId;
-        if(supplier == undefined) {
-          this.setState({
-            supplierId: { value: supplierId, label: supplierTypeId+'-'+supplierNumberId+' : '+supplierName }
-          });
-        }
+        this.setState({
+          supplierId: { value: supplierId, label: supplierTypeId+'-'+supplierNumberId+' : '+supplierName }
+        });
       }
       if(inventories != undefined) {
-        let invs = this.state.inventories;
-        if(invs.length == 0) {
-          invs = inventories.map((i) => {
-            return {
-              index: i.id,
-              fabricId: i.fabric_id,
-              fabricCode: { value: i.fabric_id, label: i.fabric_data.fabric_code, fabric: { id: i.fabric_id, unit_price: i.unit_price } },
-              fabricUnitPrice: i.fabric_data.fabric_unit_price,
-              unitPrice: i.unit_price,
-              pieces: i.pieces,
-              amount: i.amount,
-              unit: i.unit,
-            }
-          });
-          this.setState({
-            inventories: invs
-          }, this.updateTotals);
-        }
+        let invs = inventories.map((i) => {
+          return {
+            index: i.id,
+            fabricId: i.fabric_id,
+            fabricCode: { value: i.fabric_id, label: i.fabric_data.fabric_code, fabric: { id: i.fabric_id, unit_price: i.unit_price } },
+            fabricUnitPrice: i.fabric_data.fabric_unit_price,
+            unitPrice: i.unit_price,
+            pieces: i.pieces,
+            amount: i.amount,
+            unit: i.unit,
+          }
+        });
+        this.setState({
+          inventories: invs
+        }, this.updateTotals);
       }
     }
   },
@@ -207,7 +198,7 @@ const PurchaseForm = React.createClass({
           <option value="efectivo">Efectivo</option>
         </select>*/}
         <p ref="subtotal">Subtotal: {this.state.subtotal}</p>
-        <input type="text" ref="vat" placeholder="% IVA" defaultValue={12} value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
+        <input type="text" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
         <p ref="total">Total: {this.state.total}</p>
         <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
         <button onClick={(event) => this.addInventory(event, maxIndex+1)}>Agregar tela</button>

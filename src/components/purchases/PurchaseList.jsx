@@ -9,14 +9,16 @@ export default React.createClass({
       if (list && list.size > 0) {
         return (
           <div>
-            <h1>Telas</h1>
+            <h1>Compras</h1>
             <table>
               <thead>
                 <tr>
                   <th>Numero</th>
-                  <th>Descripcion</th>
-                  <th>Color</th>
-                  <th>Precio Unitario</th>
+                  <th>Proveedor</th>
+                  <th>Fecha</th>
+                  <th>Subtotal</th>
+                  <th>Iva</th>
+                  <th>Total</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -26,9 +28,11 @@ export default React.createClass({
                   return(
                     <tr key={i}>
                       <td>{purchase.get('purchase_number')}</td>
-                      <td>{/*purchase.get('description')*/}</td>
-                      <td>{/*purchase.get('color')*/}</td>
-                      <td>{/*purchase.get('unit_price')*/}</td>
+                      <td>{purchase.get('supplier_data').get('supplier_type_id')+'-'+purchase.get('supplier_data').get('supplier_number_id')+' : '+purchase.get('supplier_data').get('supplier_name')}</td>
+                      <td>{purchase.get('purchase_date')}</td>
+                      <td>{purchase.get('subtotal')}</td>
+                      <td>{purchase.get('vat')}</td>
+                      <td>{purchase.get('subtotal')+(purchase.get('subtotal')*purchase.get('vat')/100)}</td>
                       <td><Link to={`/purchases/${purchase.get('id')}/edit`}> Editar </Link></td>
                       <td><a href="#" onClick={(event) => this.handleClick(event, purchase.get('id'))}> Eliminar </a></td>
                     </tr>

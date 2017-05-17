@@ -34,5 +34,5 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-const PurchaseListContainer = connect(mapStateToProps, mapDispatchToProps)(PurchaseListContainer);
+const PurchaseListContainer = connect(mapStateToProps, mapDispatchToProps)(PurchaseList);
 export default PurchaseListContainer;
