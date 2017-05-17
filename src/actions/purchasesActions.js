@@ -31,6 +31,62 @@ export function createPurchaseFailure(message) {
   }
 }
 
+export const GET_PURCHASE_REQUEST = 'GET_PURCHASE_REQUEST'
+export const GET_PURCHASE_SUCCESS = 'GET_PURCHASE_SUCCESS'
+export const GET_PURCHASE_FAILURE = 'GET_PURCHASE_FAILURE'
+
+export function getPurchaseRequest(id) {
+  return {
+    type: GET_PURCHASE_REQUEST,
+    loading: true,
+    id: id
+  }
+}
+
+export function getPurchaseSuccess(response) {
+  return {
+    type: GET_PURCHASE_SUCCESS,
+    purchase: response,
+    loading: false
+  }
+}
+
+export function getPurchaseFailure(message) {
+  return {
+    type: GET_PURCHASE_FAILURE,
+    loading: false,
+    message
+  }
+}
+
+export const UPDATE_PURCHASE_REQUEST = 'UPDATE_PURCHASE_REQUEST'
+export const UPDATE_PURCHASE_SUCCESS = 'UPDATE_PURCHASE_SUCCESS'
+export const UPDATE_PURCHASE_FAILURE = 'UPDATE_PURCHASE_FAILURE'
+
+export function updatePurchaseRequest(purchase) {
+  return {
+    type: UPDATE_PURCHASE_REQUEST,
+    loading: true,
+    redirect: true,
+    purchase
+  }
+}
+
+export function updatePurchaseSuccess(response) {
+  return {
+    type: UPDATE_PURCHASE_SUCCESS,
+    loading: false
+  }
+}
+
+export function updatePurchaseFailure(message) {
+  return {
+    type: UPDATE_PURCHASE_FAILURE,
+    loading: false,
+    message
+  }
+}
+
 export function resetPurchase() {
   return {
     type: RESET_PURCHASE

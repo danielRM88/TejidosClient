@@ -1,35 +1,65 @@
 import React from 'react';
 import Select from 'react-select';
-import InventoryFields from './../inventories/InventoryFields'
 import fetch from 'isomorphic-fetch';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
-    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0 };
+    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: undefined };
   },
   componentDidMount: function () {
-    this.addInventory(null, 0);
+    if(this.props.id == undefined) {
+      this.addInventory(null, 0);
+    }
   },
   componentDidUpdate: function (prevProps, prevState) {
-    const { id, purchaseNumber, supplierTypeId, supplierNumberId, supplierId, purchaseDate, ivaPercentage, subtotal, inventories } = this.props
+    const { id, purchaseNumber, supplierTypeId, supplierNumberId, supplierName, supplierId, purchaseDate, vat, subtotal, inventories } = this.props
     if(purchaseNumber) {
       this.refs.purchaseNumber.value = purchaseNumber
-    }
-    if(purchaseDate){
-      this.refs.purchaseDate.value = purchaseDate
-    }
-    if(ivaPercentage){
-      this.refs.ivaPercentage.value = ivaPercentage
-    }
-    if(subtotal){
-      this.refs.subtotal.value = subtotal
-    }
-    if(supplierId && supplierTypeId && supplierNumberId) {
-      this.setState({
-        value: { value: supplierId, label: supplierTypeId+'-'+supplierNumberId }
-      });
+    
+      if(purchaseDate){
+        this.refs.purchaseDate.value = purchaseDate
+      }
+      if(vat){
+        let v = this.state.vat;
+        if(v == undefined) {
+          this.setState({
+            vat: vat
+          });
+        }
+      }
+      if(subtotal){
+        this.refs.subtotal.value = subtotal
+      }
+      if(supplierId && supplierTypeId && supplierNumberId && supplierName) {
+        let supplier = this.state.supplierId;
+        if(supplier == undefined) {
+          this.setState({
+            supplierId: { value: supplierId, label: supplierTypeId+'-'+supplierNumberId+' : '+supplierName }
+          });
+        }
+      }
+      if(inventories != undefined) {
+        let invs = this.state.inventories;
+        if(invs.length == 0) {
+          invs = inventories.map((i) => {
+            return {
+              index: i.id,
+              fabricId: i.fabric_id,
+              fabricCode: { value: i.fabric_id, label: i.fabric_data.fabric_code, fabric: { id: i.fabric_id, unit_price: i.unit_price } },
+              fabricUnitPrice: i.fabric_data.fabric_unit_price,
+              unitPrice: i.unit_price,
+              pieces: i.pieces,
+              amount: i.amount,
+              unit: i.unit,
+            }
+          });
+          this.setState({
+            inventories: invs
+          }, this.updateTotals);
+        }
+      }
     }
   },
   getSuppliers: function(input) {
@@ -177,12 +207,17 @@ const PurchaseForm = React.createClass({
           <option value="efectivo">Efectivo</option>
         </select>*/}
         <p ref="subtotal">Subtotal: {this.state.subtotal}</p>
-        <input type="text" ref="vat" placeholder="% IVA" defaultValue={12} onChange={ (event) => this.updateTotals() }/>
+        <input type="text" ref="vat" placeholder="% IVA" defaultValue={12} value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
         <p ref="total">Total: {this.state.total}</p>
         <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
         <button onClick={(event) => this.addInventory(event, maxIndex+1)}>Agregar tela</button>
       </form>
     )
+  },
+  onVatChanged: function (event) {
+    this.setState({
+      vat: event.target.value
+    }, this.updateTotals);
   },
   updateTotals: function () {
     let subtotal = 0;
@@ -316,7 +351,7 @@ const PurchaseForm = React.createClass({
     const purchaseNumber = this.refs.purchaseNumber.value.trim();
     const supplierId = this.state.supplierId == undefined ? undefined : this.state.supplierId.value;
     const purchaseDate = this.state.purchaseDate.toJSON();
-    const vat = this.refs.vat.value;
+    const vat = this.state.vat;
     const formOfPayent = "transferencia";//this.refs.formOfPayent.value;
     const subtotal = this.refs.subtotal.value;
 

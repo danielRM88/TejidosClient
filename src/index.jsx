@@ -23,6 +23,7 @@ import SupplierList                                  from './containers/supplier
 import SupplierDetail                                from './containers/suppliers/SupplierDetailContainer';
 
 import PurchaseNew                                   from './containers/purchases/PurchaseNewContainer';
+import PurchaseEdit                                  from './containers/purchases/PurchaseEditContainer';
 
 import authMiddleware                                from './middleware/authMiddleware';
 import fabricsMiddleware                             from './middleware/fabricsMiddleware';
@@ -35,7 +36,7 @@ import { removeMessage }                             from './actions/messagesAct
 import { createFabricSuccess, getFabricRequest, getFabricsRequest }     from './actions/fabricsActions';
 import { createClientSuccess, getClientRequest, getClientsRequest }     from './actions/clientsActions';
 import { createSupplierSuccess, getSupplierRequest, getSuppliersRequest }     from './actions/suppliersActions';
-import { createPurchaseSuccess, resetPurchase }     from './actions/purchasesActions';
+import { createPurchaseSuccess, resetPurchase, getPurchaseRequest }     from './actions/purchasesActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -95,7 +96,8 @@ const routes = <Route path="/" component={App}>
                 <Route path="/suppliers/:id" component={SupplierDetail} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
                 <Route path="/suppliers/:id/edit" component={SupplierEdit} onEnter={(route) => store.dispatch(getSupplierRequest(route.params.id))} />
 
-                <Route path="/purchases/new" component={PurchaseNew} />
+                <Route path="/purchases/new" component={PurchaseNew} onEnter={ () => store.dispatch(createPurchaseSuccess()) }/>
+                <Route path="/purchases/:id/edit" component={PurchaseEdit} onEnter={(route) => store.dispatch(getPurchaseRequest(route.params.id))} />
 
                 <Route path='*' component={NotFound} />
                </Route>;
