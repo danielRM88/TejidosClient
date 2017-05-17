@@ -69,4 +69,19 @@ export function updatePurchaseService(data, success, error) {
     })
 };
 
+export function deletePurchaseService(data, success, error) {
+  request
+    .delete(config.serverUrl+'/api/v1/purchases/'+data.purchase_id)
+    .set('Authorization', 'Bearer '+localStorage.getItem('token'))
+    .set('Content-Type', 'application/json')
+    .end((err, res) => {
+      if (err) {
+        error(err);
+      } else {
+        // const response = JSON.parse(res.text);
+        success();
+      }
+    })
+};
+
 export default createPurchaseService

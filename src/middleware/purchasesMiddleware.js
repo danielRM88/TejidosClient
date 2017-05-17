@@ -1,4 +1,4 @@
-import createPurchaseService, { getPurchaseService, updatePurchaseService, getPurchasesService } from '../services/purchasesService'
+import createPurchaseService, { getPurchaseService, updatePurchaseService, getPurchasesService, deletePurchaseService } from '../services/purchasesService'
 import { createPurchaseSuccess, 
          createPurchaseFailure,
          getPurchaseSuccess, 
@@ -7,9 +7,11 @@ import { createPurchaseSuccess,
          updatePurchaseFailure,
          getPurchasesRequest,
          getPurchasesSuccess,
-         getPurchasesFailure
+         getPurchasesFailure,
+         deletePurchaseSuccess, 
+         deletePurchaseFailure
        } from '../actions/purchasesActions';
-import { CREATE_PURCHASE_REQUEST, GET_PURCHASE_REQUEST, UPDATE_PURCHASE_REQUEST, GET_PURCHASES_REQUEST } from '../actions/purchasesActions';
+import { CREATE_PURCHASE_REQUEST, GET_PURCHASE_REQUEST, UPDATE_PURCHASE_REQUEST, GET_PURCHASES_REQUEST, DELETE_PURCHASE_REQUEST } from '../actions/purchasesActions';
 import { logoutSuccess } from '../actions/authActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
@@ -28,6 +30,9 @@ const purchasesMiddleware = store => next => action => {
       break
     case GET_PURCHASES_REQUEST:
       getPurchasesMiddlewareAction(next, action);
+      break
+    case DELETE_PURCHASE_REQUEST:
+      deletePurchaseMiddlewareAction(next, action);
       break
     default:
       break
@@ -105,6 +110,26 @@ function updatePurchaseMiddlewareAction(next, action) {
   };
 
   updatePurchaseService(action, success, error);
+};
+
+function deletePurchaseMiddlewareAction(next, action) {
+  const error = (err) => {
+    if (err.status == 401) {
+      next(logoutSuccess());
+    }
+    next(setMessage(err.message));
+    next(deletePurchaseFailure(err.message));
+  };
+
+  const success = (response) => {
+    next(setMessage("Compra eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(deletePurchaseSuccess());
+    if (action.redirect) {
+      hashHistory.push('/purchases');
+    }
+  };
+
+  deletePurchaseService(action, success, error);
 };
 
 export default purchasesMiddleware

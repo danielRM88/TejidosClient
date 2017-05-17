@@ -197,9 +197,9 @@ const PurchaseForm = React.createClass({
           <option value="deposito">Deposito</option>
           <option value="efectivo">Efectivo</option>
         </select>*/}
-        <p ref="subtotal">Subtotal: {this.state.subtotal}</p>
+        <p ref="subtotal">Subtotal: {this.state.subtotal.toFixed(2)}</p>
         <input type="text" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
-        <p ref="total">Total: {this.state.total}</p>
+        <p ref="total">Total: {this.state.total.toFixed(2)}</p>
         <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
         <button onClick={(event) => this.addInventory(event, maxIndex+1)}>Agregar tela</button>
       </form>

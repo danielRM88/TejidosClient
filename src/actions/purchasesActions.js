@@ -118,6 +118,34 @@ export function getPurchasesFailure(message) {
   }
 }
 
+export const DELETE_PURCHASE_REQUEST = 'DELETE_PURCHASE_REQUEST'
+export const DELETE_PURCHASE_SUCCESS = 'DELETE_PURCHASE_SUCCESS'
+export const DELETE_PURCHASE_FAILURE = 'DELETE_PURCHASE_FAILURE'
+
+export function deletePurchaseRequest(purchase_id) {
+  return {
+    type: DELETE_PURCHASE_REQUEST,
+    loading: true,
+    redirect: true,
+    purchase_id
+  }
+}
+
+export function deletePurchaseSuccess() {
+  return {
+    type: DELETE_PURCHASE_SUCCESS,
+    loading: false
+  }
+}
+
+export function deletePurchaseFailure(message) {
+  return {
+    type: DELETE_PURCHASE_FAILURE,
+    loading: false,
+    message
+  }
+}
+
 export function resetPurchase() {
   return {
     type: RESET_PURCHASE
