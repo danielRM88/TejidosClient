@@ -26,11 +26,16 @@ import PurchaseNew                                   from './containers/purchase
 import PurchaseEdit                                  from './containers/purchases/PurchaseEditContainer';
 import PurchaseList                                  from './containers/purchases/PurchaseListContainer';
 
+import InvoiceNew                                    from './containers/invoices/InvoiceNewContainer';
+import InvoiceEdit                                   from './containers/invoices/InvoiceEditContainer';
+import InvoiceList                                   from './containers/invoices/InvoiceListContainer';
+
 import authMiddleware                                from './middleware/authMiddleware';
 import fabricsMiddleware                             from './middleware/fabricsMiddleware';
 import clientsMiddleware                             from './middleware/clientsMiddleware';
 import suppliersMiddleware                           from './middleware/suppliersMiddleware';
 import purchasesMiddleware                           from './middleware/purchasesMiddleware';
+import invoicesMiddleware                            from './middleware/invoicesMiddleware';
 import { Map, fromJS }                               from 'immutable';
 import { syncHistoryWithStore, routerReducer }       from 'react-router-redux';
 import { removeMessage }                             from './actions/messagesActions';
@@ -38,6 +43,7 @@ import { createFabricSuccess, getFabricRequest, getFabricsRequest }     from './
 import { createClientSuccess, getClientRequest, getClientsRequest }     from './actions/clientsActions';
 import { createSupplierSuccess, getSupplierRequest, getSuppliersRequest }     from './actions/suppliersActions';
 import { createPurchaseSuccess, resetPurchase, getPurchaseRequest, getPurchasesRequest }     from './actions/purchasesActions';
+import { createInvoiceSuccess, getInvoiceRequest, getInvoicesRequest }     from './actions/invoicesActions';
 
 const NotFound = () => (
   <h1> This page was not found! </h1>
@@ -49,8 +55,15 @@ const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), tok
                             fabrics: {}, 
                             clients: {}, 
                             suppliers: {}, 
-                            purchases: {} });
-const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, authMiddleware, fabricsMiddleware, clientsMiddleware, suppliersMiddleware, purchasesMiddleware));
+                            purchases: {},
+                            invoices: {} });
+const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, 
+                                                                authMiddleware, 
+                                                                fabricsMiddleware, 
+                                                                clientsMiddleware, 
+                                                                suppliersMiddleware, 
+                                                                purchasesMiddleware,
+                                                                invoicesMiddleware));
 
 /* Create enhanced history object for router */
 const createSelectLocationState = () => {
@@ -103,6 +116,13 @@ const routes = <Route path="/" component={App}>
                         onChange={ () => store.dispatch(getPurchasesRequest()) }/>
                 <Route path="/purchases/new" component={PurchaseNew} onEnter={ () => store.dispatch(createPurchaseSuccess()) }/>
                 <Route path="/purchases/:id/edit" component={PurchaseEdit} onEnter={(route) => store.dispatch(getPurchaseRequest(route.params.id))} />
+
+                <Route path="/invoices" 
+                        component={InvoiceList} 
+                        onEnter={ () => store.dispatch(getInvoicesRequest()) } 
+                        onChange={ () => store.dispatch(getInvoicesRequest()) }/>
+                <Route path="/invoices/new" component={InvoiceNew} onEnter={ () => store.dispatch(createInvoiceSuccess()) }/>
+                <Route path="/invoices/:id/edit" component={InvoiceEdit} onEnter={(route) => store.dispatch(getInvoiceRequest(route.params.id))} />
 
                 <Route path='*' component={NotFound} />
                </Route>;

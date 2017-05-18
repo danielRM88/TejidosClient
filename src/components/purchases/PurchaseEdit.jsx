@@ -8,7 +8,7 @@ export default React.createClass({
     const { id } = this.props.params
     return (
       <div>
-        <h1>Editar Tela</h1>
+        <h1>Editar Compra</h1>
         <PurchaseForm 
           id={id} 
           purchaseNumber={purchaseNumber} 

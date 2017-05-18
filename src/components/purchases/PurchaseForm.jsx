@@ -6,7 +6,7 @@ import moment from 'moment';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
-    return { supplierId: null, label: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: 12 };
+    return { supplierId: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: 12 };
   },
   componentDidMount: function () {
     if(this.props.id == undefined) {

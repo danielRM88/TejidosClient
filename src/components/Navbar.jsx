@@ -21,7 +21,7 @@ export default React.createClass({
               <ul className="nav navbar-nav">
                 <li> <Link to="/"> Home </Link> </li>
                 <li> <Link to="/purchases"> Compras </Link> </li>
-                <li> <Link to="/fabrics"> Facturas </Link> </li>
+                <li> <Link to="/invoices"> Facturas </Link> </li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Catalogo <span className="caret"></span></a>
                   <ul className="dropdown-menu">
