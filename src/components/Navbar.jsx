@@ -19,7 +19,7 @@ export default React.createClass({
 
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
-                <li> <Link to="/"> Home </Link> </li>
+                <li> <Link to="/stocks"> Inventario </Link> </li>
                 <li> <Link to="/purchases"> Compras </Link> </li>
                 <li> <Link to="/invoices"> Facturas </Link> </li>
                 <li className="dropdown">

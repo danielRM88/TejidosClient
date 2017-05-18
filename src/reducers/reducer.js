@@ -5,6 +5,7 @@ import clients from './clients'
 import suppliers from './suppliers'
 import purchases from './purchases'
 import invoices from './invoices'
+import stocks from './stocks'
 import routerReducer from './routerReducer'
 import messages from './messages'
 
@@ -15,6 +16,7 @@ export default combineReducers({
   suppliers,
   purchases,
   invoices,
+  stocks,
   messages,
   routing: routerReducer
 })
