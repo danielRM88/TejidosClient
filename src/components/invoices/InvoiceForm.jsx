@@ -11,11 +11,22 @@ const InvoiceForm = React.createClass({
   componentDidMount: function () {
     if(this.props.id == undefined) {
       this.addSale(null, 0);
+      let that = this;
+      fetch(`http://localhost:3000/api/v1/invoices/get_next_invoice_number`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer '+localStorage.getItem('token')
+        }
+      }).then((response) => response.json())
+      .then((json) => {
+        // return json.invoice_number;
+        that.refs.invoiceNumber.value = json.invoice_number;
+      });
     }
   },
   componentWillReceiveProps: function (nextProps) {
     const { id, invoiceNumber, clientTypeId, clientNumberId, clientName, clientId, invoiceDate, vat, subtotal, sales } = nextProps
-    if(invoiceNumber) {
+    if(invoiceNumber != undefined) {
       this.refs.invoiceNumber.value = invoiceNumber
     
       if(invoiceDate){
@@ -39,7 +50,8 @@ const InvoiceForm = React.createClass({
           return {
             index: i.id,
             fabricId: i.fabric_data.fabric_id,
-            fabricCode: { value: i.fabric_id, label: i.fabric_data.fabric_code, fabric: { id: i.fabric_data.fabric_id, unit_price: i.unit_price } },
+            fabricCode: i.fabric_data.fabric_code,
+            fabric: { value: i.fabric_id, label: i.fabric_data.fabric_code, fabric: { id: i.fabric_data.fabric_id, unit_price: i.unit_price } },
             unitPrice: i.unit_price,
             pieces: i.pieces,
             amount: i.amount,
@@ -125,7 +137,7 @@ const InvoiceForm = React.createClass({
                         cache={false}
                         labelKey="label" 
                         loadOptions={this.getClients} 
-                        placeholder="Rif del Proveedor"
+                        placeholder="Rif del Cliente"
                         backspaceRemoves={true} />
         <DatePicker
           ref="invoiceDate"
@@ -140,6 +152,7 @@ const InvoiceForm = React.createClass({
             }
             let fabricId = sale.fabricId;
             let fabricCode = sale.fabricCode;
+            let fabric = sale.fabric;
             let unitPrice = sale.unitPrice;
             let pieces = sale.pieces;
             let amount = sale.amount;
@@ -149,11 +162,12 @@ const InvoiceForm = React.createClass({
                 <p>{sale.index}</p>
                 <div>
                   <AsyncComponent multi={false} 
-                        value={sale.fabricCode} 
+                        value={sale.fabric} 
                         onChange={ (value) => {
                             let invs = this.state.sales.map( (inv) => {
                               if(inv.index === sale.index) {
-                                inv.fabricCode = value;
+                                inv.fabric = value;
+                                inv.fabricCode = value.label;
                                 inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
                                 inv.unitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
                                 this.refs[sale.index+"_unitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
@@ -332,7 +346,7 @@ const InvoiceForm = React.createClass({
     const subtotal = this.refs.subtotal.value;
 
     let sales = this.state.sales.map( (sale) => {
-      return { fabric_id: sale.fabricId, pieces: sale.pieces, amount: sale.amount, unit: sale.unit, unit_price: sale.unitPrice }
+      return { fabric_id: sale.fabricId, fabric_code: sale.fabricCode, pieces: sale.pieces, amount: sale.amount, unit: sale.unit, unit_price: sale.unitPrice }
     });
 
     const invoice = { id, invoice_number: invoiceNumber, client_id: clientId, invoice_date: invoiceDate, vat: vat, form_of_payment: formOfPayent, subtotal, sales_attributes: sales }
