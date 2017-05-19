@@ -16,7 +16,7 @@ export default React.createClass({
                   <th>Codigo Tela</th>
                   <th>Piezas</th>
                   <th>Cantidad</th>
-                  <th>Unit</th>
+                  <th>Unidad</th>
                 </tr>
               </thead>
               <tbody>

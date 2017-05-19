@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import DatePicker from 'react-datepicker';
@@ -137,8 +138,10 @@ const InvoiceForm = React.createClass({
                         cache={false}
                         labelKey="label" 
                         loadOptions={this.getClients} 
-                        placeholder="Rif del Cliente"
+                        placeholder="Id. del Cliente"
                         backspaceRemoves={true} />
+        <Link to="/clients/new" target="_blank"> Nuevo Cliente </Link>
+        <br/>
         <DatePicker
           ref="invoiceDate"
           dateFormat="DD/MM/YYYY"
@@ -202,12 +205,12 @@ const InvoiceForm = React.createClass({
           })
         }
         <hr/>
-        {/*<select ref="formOfPayent" defaultValue="transferencia">
+        <select ref="formOfPayent" defaultValue="transferencia">
           <option value="transferencia">Trasferencia</option>
           <option value="cheque">Cheque</option>
           <option value="deposito">Deposito</option>
           <option value="efectivo">Efectivo</option>
-        </select>*/}
+        </select>
         <p ref="subtotal">Subtotal: {this.state.subtotal.toFixed(2)}</p>
         <input type="text" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
         <p ref="total">Total: {this.state.total.toFixed(2)}</p>
