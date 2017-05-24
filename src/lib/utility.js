@@ -62,6 +62,10 @@ export const mapper = string => {
     translation = "Ventas";
   } else if(string == "Not Enough Existence") {
     translation = "No hay suficiente inventario (Revise que la unidad sea correcta m - kgs.)";
+  } else if(string == "phones.area_code") {
+    translation = "El código de área";
+  } else if(string == "phones.phone_number") {
+    translation = "El número de teléfono";
   }
 
   return translation;

@@ -4,7 +4,7 @@ import ClientForm from './ClientForm';
 
 export default React.createClass({
   render: function() {
-    const { loading, clientName, typeId, numberId, address, email } = this.props
+    const { loading, clientName, typeId, numberId, address, email, phone } = this.props
     const { id } = this.props.params
     return (
       <div>
@@ -16,6 +16,7 @@ export default React.createClass({
           numberId={numberId} 
           address={address} 
           email={email}
+          phone={phone}
           onActionClick={this.props.onUpdateClick}/>
         <Link to="/clients"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }

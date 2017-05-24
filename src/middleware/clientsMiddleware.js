@@ -59,7 +59,7 @@ function createClientMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Cliente creado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Cliente creado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(createClientSuccess(response));
     if (action.redirect) {
       hashHistory.push('/clients/'+response.id);

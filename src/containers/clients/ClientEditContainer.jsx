@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
   let numberId = ""
   let address = ""
   let email = ""
+  let phone = ""
 
   if(client) {
     id = client.get('id');
@@ -22,6 +23,11 @@ const mapStateToProps = (state) => {
     numberId = client.get('number_id');
     address = client.get('address');
     email = client.get('email');
+    phone = {
+      country_code: client.get("phone").get("country_code"),
+      area_code: client.get("phone").get("area_code"),
+      phone_number: client.get("phone").get("phone_number")
+    }
   }
 
   return ({
@@ -31,7 +37,8 @@ const mapStateToProps = (state) => {
     typeId, 
     numberId, 
     address,
-    email
+    email,
+    phone
   })
 };
 
