@@ -2,8 +2,19 @@ import React from 'react';
 
 export default React.createClass({
   render: function() {
-    return (
-      <h2>{this.props.message}</h2>
-    )
+    const { messages } = this.props
+    if(messages != undefined) {
+      return (
+        <div>
+          {
+            messages.map((message, index) => {
+              return (<h2 key={index}>{message}</h2>);
+            })
+          }
+        </div>
+      )
+    } else {
+      return (<div></div>)
+    }
   }
 });

@@ -15,6 +15,7 @@ import { CREATE_INVOICE_REQUEST, GET_INVOICE_REQUEST, UPDATE_INVOICE_REQUEST, GE
 import { logoutSuccess } from '../actions/authActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
+import { processErrorMessages } from '../lib/utility';
 
 const invoicesMiddleware = store => next => action => {
   next(action)
@@ -44,12 +45,21 @@ function createInvoiceMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message, "error"));
+    let errors = ["La factura no pudo ser creada"]
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(createInvoiceFailure(err.message));
   };
 
   const success = (response) => {
-    next(setMessage("Compra creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Factura creada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(createInvoiceSuccess(response));
     if (action.redirect) {
       hashHistory.push('/invoices');
@@ -97,12 +107,21 @@ function updateInvoiceMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    let errors = ["La factura no pudo ser actualizada"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(updateInvoiceFailure(err.message));
   };
 
   const success = () => {
-    next(setMessage("Tela actualizada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Factura actualizada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(updateInvoiceSuccess());
     if (action.redirect) {
       hashHistory.push('/invoices');
@@ -122,7 +141,7 @@ function deleteInvoiceMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Compra eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Factura eliminada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(deleteInvoiceSuccess());
     if (action.redirect) {
       hashHistory.push('/invoices');

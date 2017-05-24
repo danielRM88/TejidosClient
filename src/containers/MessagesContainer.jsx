@@ -2,7 +2,7 @@ import Messages from '../components/Messages'
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  message: state.get('messages').get('message')
+  messages: state.get('messages').get('list')
 });
 
 const MessagesContainer = connect(mapStateToProps, null)(Messages);

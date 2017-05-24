@@ -20,7 +20,7 @@ const FabricForm = React.createClass({
     const { id, code, description, color, unitPrice } = this.props
     return (
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="code" placeholder="Codigo" defaultValue={code}/>
+          <input type="text" ref="code" placeholder="Codigo" defaultValue={code} autoFocus/>
           <input type="text" ref="description" placeholder="Descripcion" defaultValue={description}/>
           <input type="text" ref="color" placeholder="Color" defaultValue={color}/>
           <input type="number" ref="unitPrice" placeholder="Precio Unitario" defaultValue={unitPrice}/>

@@ -15,6 +15,7 @@ import { logoutSuccess } from '../actions/authActions';
 import { CREATE_CLIENT_REQUEST, GET_CLIENT_REQUEST, UPDATE_CLIENT_REQUEST, GET_CLIENTS_REQUEST, DELETE_CLIENT_REQUEST } from '../actions/clientsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
+import { processErrorMessages } from '../lib/utility'
 
 const clientsMiddleware = store => next => action => {
   next(action)
@@ -44,7 +45,16 @@ function createClientMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message, "error"));
+    let errors = ["El cliente no pudo ser creado"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(createClientFailure(err.message));
   };
 
@@ -96,12 +106,21 @@ function updateClientMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    let errors = ["El cliente no pudo ser actualizado"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(updateClientFailure(err.message));
   };
 
   const success = () => {
-    next(setMessage("Cliente actualizado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Cliente actualizado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(updateClientSuccess());
     if (action.redirect) {
       hashHistory.push('/clients/'+action.client.id);
@@ -121,7 +140,7 @@ function deleteClientMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Cliente eliminado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Cliente eliminado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(deleteClientSuccess());
     if (action.redirect) {
       hashHistory.push('/clients');

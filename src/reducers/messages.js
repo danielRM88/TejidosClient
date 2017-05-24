@@ -5,10 +5,10 @@ const INIT_STATE = fromJS({});
 export default function messages(state = INIT_STATE, action) {
   switch (action.type) {
     case SET_MESSAGE:
-      let newStateAfterSet = state.setIn(['message'], action.message);
+      let newStateAfterSet = state.setIn(['list'], action.messages);
       return newStateAfterSet.setIn(['messageType'], action.messageType);
     case REMOVE_MESSAGE:
-      let newState = state.deleteIn(['message']);
+      let newState = state.deleteIn(['list']);
       newState = newState.deleteIn(['messageType']);
       return newState;
   }

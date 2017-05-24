@@ -15,6 +15,7 @@ import { CREATE_PURCHASE_REQUEST, GET_PURCHASE_REQUEST, UPDATE_PURCHASE_REQUEST,
 import { logoutSuccess } from '../actions/authActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
+import { processErrorMessages } from '../lib/utility'
 
 const purchasesMiddleware = store => next => action => {
   next(action)
@@ -44,12 +45,21 @@ function createPurchaseMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message, "error"));
+    let errors = ["La compra no pudo ser creada"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(createPurchaseFailure(err.message));
   };
 
   const success = (response) => {
-    next(setMessage("Compra creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Compra creada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(createPurchaseSuccess(response));
     if (action.redirect) {
       hashHistory.push('/purchases');
@@ -97,12 +107,21 @@ function updatePurchaseMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    let errors = ["La compra no pudo ser actualizada"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(updatePurchaseFailure(err.message));
   };
 
   const success = () => {
-    next(setMessage("Tela actualizada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Tela actualizada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(updatePurchaseSuccess());
     if (action.redirect) {
       hashHistory.push('/purchases');
@@ -122,7 +141,7 @@ function deletePurchaseMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Compra eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Compra eliminada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(deletePurchaseSuccess());
     if (action.redirect) {
       hashHistory.push('/purchases');

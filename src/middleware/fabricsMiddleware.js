@@ -15,6 +15,7 @@ import { logoutSuccess } from '../actions/authActions';
 import { CREATE_FABRIC_REQUEST, GET_FABRIC_REQUEST, UPDATE_FABRIC_REQUEST, GET_FABRICS_REQUEST, DELETE_FABRIC_REQUEST } from '../actions/fabricsActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
+import { processErrorMessages } from '../lib/utility'
 
 const fabricsMiddleware = store => next => action => {
   next(action)
@@ -44,12 +45,21 @@ function createFabricMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message, "error"));
+    let errors = ["La tela no pudo ser creada"]
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(createFabricFailure(err.message));
   };
 
   const success = (response) => {
-    next(setMessage("Tela creada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Tela creada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(createFabricSuccess(response));
     if (action.redirect) {
       hashHistory.push('/fabrics/'+response.id);
@@ -96,12 +106,21 @@ function updateFabricMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    let errors = ["La tela no pudo ser actualizada"]
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+    
+    next(setMessage(errors, "error"));
     next(updateFabricFailure(err.message));
   };
 
   const success = () => {
-    next(setMessage("Tela actualizada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Tela actualizada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(updateFabricSuccess());
     if (action.redirect) {
       hashHistory.push('/fabrics/'+action.fabric.id);
@@ -121,7 +140,7 @@ function deleteFabricMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Tela eliminada exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Tela eliminada exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(deleteFabricSuccess());
     if (action.redirect) {
       hashHistory.push('/fabrics');

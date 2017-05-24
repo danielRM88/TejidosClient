@@ -15,6 +15,7 @@ import { logoutSuccess } from '../actions/authActions';
 import { CREATE_SUPPLIER_REQUEST, GET_SUPPLIER_REQUEST, UPDATE_SUPPLIER_REQUEST, GET_SUPPLIERS_REQUEST, DELETE_SUPPLIER_REQUEST } from '../actions/suppliersActions';
 import { setMessage, removeMessage } from '../actions/messagesActions';
 import { browserHistory, hashHistory } from 'react-router';
+import { processErrorMessages } from '../lib/utility'
 
 const suppliersMiddleware = store => next => action => {
   next(action)
@@ -44,12 +45,21 @@ function createSupplierMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message, "error"));
+    let errors = ["El proveedor no pudo ser creado"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(createSupplierFailure(err.message));
   };
 
   const success = (response) => {
-    next(setMessage("Proveedor creado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Proveedor creado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(createSupplierSuccess(response));
     if (action.redirect) {
       hashHistory.push('/suppliers/'+response.id);
@@ -96,12 +106,21 @@ function updateSupplierMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    let errors = ["El proveedor no pudo ser actualizado"];
+    
+    let body = err.response.body;
+    let errorJson = {};
+    if(body != undefined) {
+      errorJson = body.errors
+    }
+    errors = errors.concat(processErrorMessages(errorJson));
+
+    next(setMessage(errors, "error"));
     next(updateSupplierFailure(err.message));
   };
 
   const success = () => {
-    next(setMessage("Proveedor actualizado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Proveedor actualizado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(updateSupplierSuccess());
     if (action.redirect) {
       hashHistory.push('/suppliers/'+action.supplier.id);
@@ -121,7 +140,7 @@ function deleteSupplierMiddlewareAction(next, action) {
   };
 
   const success = (response) => {
-    next(setMessage("Proveedor eliminado exitosamente", "success")); // not gonna show because of route change ??? how to fix ???
+    next(setMessage(["Proveedor eliminado exitosamente"], "success")); // not gonna show because of route change ??? how to fix ???
     next(deleteSupplierSuccess());
     if (action.redirect) {
       hashHistory.push('/suppliers');
