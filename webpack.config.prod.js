@@ -15,7 +15,7 @@ export default {
     extensions: ['', '.js', '.jsx']
   },
   externals: {
-    'config': JSON.stringify(require('./config/config.dev.json'))
+    'config': JSON.stringify(require('./config/config.prod.json'))
   },
   plugins: [
     new webpack.optimize.DedupePlugin(),
@@ -27,21 +27,17 @@ export default {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
-        'API_HOST': JSON.stringify('https://catbook-api.herokuapp.com')
+        'NODE_ENV': JSON.stringify('production')
       }
     })
   ],
   module: {
     loaders: [
       {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel'},
-      { test: /\.scss?$/,
-        loader: 'style!css!sass',
-        include: path.join(__dirname, 'src', 'styles') },
-      { test: /\.png$/,
-        loader: 'file' },
-      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        loader: 'file'}
+      {test: /(\.css)$/, loaders: ['style', 'css']},
+      {test: /\.scss?$/, loader: 'style!css!sass', include: path.join(__dirname, 'src', 'styles') },
+      {test: /\.png$/, loader: 'file' },
+      {test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file'}
     ]
   }
 }
