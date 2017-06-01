@@ -24,7 +24,7 @@ function getStocksMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getStocksFailure(err.message));
   };
 

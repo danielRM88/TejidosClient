@@ -7,7 +7,7 @@ export default function auth(state = INIT_STATE, action) {
     case LOGIN_REQUEST:
       let newStateAfterReq = state.setIn(['loading'], true);
       newStateAfterReq = newStateAfterReq.deleteIn(['token']);
-      newStateAfterReq = newStateAfterReq.deleteIn(['message']);
+      // newStateAfterReq = newStateAfterReq.deleteIn(['message']);
       return newStateAfterReq;
     case LOGIN_SUCCESS:
       let newStateAfterSuccess = state.setIn(['isAuthenticated'], true);
@@ -15,8 +15,8 @@ export default function auth(state = INIT_STATE, action) {
       newStateAfterSuccess = newStateAfterSuccess.setIn(['token'], action.token);
       return newStateAfterSuccess;
     case LOGIN_FAILURE:
-      let newStateAfterFailure = state.setIn(['message'], action.message);
-      newStateAfterFailure = newStateAfterFailure.setIn(['loading'], false);
+      // let newStateAfterFailure = state.setIn(['message'], action.message);
+      let newStateAfterFailure = newStateAfterFailure.setIn(['loading'], false);
       return newStateAfterFailure;
     case LOGOUT_REQUEST:
       return state;

@@ -74,7 +74,7 @@ function getSuppliersMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getSuppliersFailure(err.message));
   };
 
@@ -90,7 +90,7 @@ function getSupplierMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getSupplierFailure(err.message));
   };
 
@@ -135,7 +135,7 @@ function deleteSupplierMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(deleteSupplierFailure(err.message));
   };
 

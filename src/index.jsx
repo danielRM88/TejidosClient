@@ -60,7 +60,7 @@ const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), tok
                             purchases: {},
                             invoices: {},
                             stocks: {},
-                            messages: {list: []} });
+                            messages: {} });
 const store = createStore(reducer, INIT_STATE, applyMiddleware(authMiddleware, 
                                                                 fabricsMiddleware, 
                                                                 clientsMiddleware, 

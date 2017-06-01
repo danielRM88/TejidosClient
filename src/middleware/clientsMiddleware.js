@@ -74,7 +74,7 @@ function getClientsMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getClientsFailure(err.message));
   };
 
@@ -90,7 +90,7 @@ function getClientMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getClientFailure(err.message));
   };
 
@@ -135,7 +135,7 @@ function deleteClientMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(deleteClientFailure(err.message));
   };
 

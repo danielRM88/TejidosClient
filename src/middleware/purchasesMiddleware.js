@@ -42,10 +42,11 @@ const purchasesMiddleware = store => next => action => {
 
 function createPurchaseMiddlewareAction(next, action) {
   const error = (err) => {
+    let errors = ["La compra no pudo ser creada"];
     if (err.status == 401) {
+      errors = ["Debe realizar log in primero"];
       next(logoutSuccess());
     }
-    let errors = ["La compra no pudo ser creada"];
     
     let body = err.response.body;
     let errorJson = {};
@@ -74,7 +75,7 @@ function getPurchaseMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getPurchaseFailure(err.message));
     hashHistory.push('/purchases');
   };
@@ -91,7 +92,7 @@ function getPurchasesMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getPurchasesFailure(err.message));
   };
 
@@ -136,7 +137,7 @@ function deletePurchaseMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(deletePurchaseFailure(err.message));
   };
 

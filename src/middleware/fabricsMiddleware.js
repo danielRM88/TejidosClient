@@ -74,7 +74,7 @@ function getFabricsMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getFabricsFailure(err.message));
   };
 
@@ -90,7 +90,7 @@ function getFabricMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getFabricFailure(err.message));
   };
 
@@ -135,7 +135,7 @@ function deleteFabricMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(deleteFabricFailure(err.message));
   };
 

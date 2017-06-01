@@ -74,7 +74,7 @@ function getInvoiceMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getInvoiceFailure(err.message));
     hashHistory.push('/invoices');
   };
@@ -91,7 +91,7 @@ function getInvoicesMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(getInvoicesFailure(err.message));
   };
 
@@ -136,7 +136,7 @@ function deleteInvoiceMiddlewareAction(next, action) {
     if (err.status == 401) {
       next(logoutSuccess());
     }
-    next(setMessage(err.message));
+    next(setMessage([err.message], "error"));
     next(deleteInvoiceFailure(err.message));
   };
 
