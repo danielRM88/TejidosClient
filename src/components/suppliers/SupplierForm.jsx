@@ -23,7 +23,7 @@ const SupplierForm = React.createClass({
     const { id, supplierName, typeId, numberId, address, email } = this.props
     return (
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="supplierName" placeholder="Nombre del Proveedor" defaultValue={supplierName}/>
+          <input type="text" ref="supplierName" placeholder="Nombre del Proveedor" defaultValue={supplierName} autoFocus/>
           <input type="text" ref="typeId" placeholder="Tipo de Id." defaultValue={typeId}/>
           <input type="text" ref="numberId" placeholder="Numero de Id." defaultValue={numberId}/>
           <input type="text" ref="address" placeholder="Direccion" defaultValue={address}/>

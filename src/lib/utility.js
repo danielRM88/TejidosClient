@@ -66,6 +66,12 @@ export const mapper = string => {
     translation = "El código de área";
   } else if(string == "phones.phone_number") {
     translation = "El número de teléfono";
+  } else if(string == "sales.amount") {
+    translation = "La cantidad de la tela";
+  } else if(string == "sales.pieces") {
+    translation = "El número de piezas";
+  } else if(string == "sales.unit_price") {
+    translation = "El precio de la tela";
   }
 
   return translation;

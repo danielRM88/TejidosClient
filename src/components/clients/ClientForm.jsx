@@ -36,7 +36,7 @@ const ClientForm = React.createClass({
     }
     return (
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="clientName" placeholder="Nombre del Cliente" defaultValue={clientName}/>
+          <input type="text" ref="clientName" placeholder="Nombre del Cliente" defaultValue={clientName} autoFocus/>
           <input type="text" ref="typeId" placeholder="Tipo de Id." defaultValue={typeId}/>
           <input type="text" ref="numberId" placeholder="Numero de Id." defaultValue={numberId}/>
           <input type="text" ref="address" placeholder="Direccion" defaultValue={address}/>

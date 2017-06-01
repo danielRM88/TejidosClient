@@ -9,7 +9,7 @@ const authMiddleware = store => next => action => {
     case LOGIN_REQUEST:
 
       const error = (err) => {
-        next(setMessage("Invalid email / password", "error"));
+        next(setMessage(["Invalid email / password"], "error"));
         next(loginFailure("Invalid email / password"));
       };
 

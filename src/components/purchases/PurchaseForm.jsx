@@ -3,6 +3,8 @@ import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import 'react-select/dist/react-select.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
