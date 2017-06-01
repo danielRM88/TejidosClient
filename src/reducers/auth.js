@@ -16,7 +16,7 @@ export default function auth(state = INIT_STATE, action) {
       return newStateAfterSuccess;
     case LOGIN_FAILURE:
       // let newStateAfterFailure = state.setIn(['message'], action.message);
-      let newStateAfterFailure = newStateAfterFailure.setIn(['loading'], false);
+      let newStateAfterFailure = state.setIn(['loading'], false);
       return newStateAfterFailure;
     case LOGOUT_REQUEST:
       return state;
