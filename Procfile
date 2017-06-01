@@ -1,1 +1,1 @@
-web: babel-node ./publicServer.js 
+web: npm run build
