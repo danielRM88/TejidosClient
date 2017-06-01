@@ -74,12 +74,6 @@
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "2.10.0"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
-  },
   "dependencies": {
     "immutable": "^3.8.1",
     "redux-immutable": "4.0.0",
