@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-select/dist/react-select.css';
 import 'react-datepicker/dist/react-datepicker.css';
+var config = require('config');
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
@@ -66,7 +67,7 @@ const PurchaseForm = React.createClass({
       type = input.split("-")[0];
       number = input.split("-")[1];
     }
-    return fetch(`http://localhost:3000/api/v1/suppliers?type_id=${type}&number_id=${number}`, {
+    return fetch(config.serverUrl+`/api/v1/suppliers?type_id=${type}&number_id=${number}`, {
                   headers: {
                     "Content-Type": "application/json",
                     "Authorization": 'Bearer '+localStorage.getItem('token')
@@ -88,7 +89,7 @@ const PurchaseForm = React.createClass({
     if (!input) {
       return Promise.resolve({ options: [] });
     }
-    return fetch(`http://localhost:3000/api/v1/fabrics?code=${input}`, {
+    return fetch(config.serverUrl+`/api/v1/fabrics?code=${input}`, {
                   headers: {
                     "Content-Type": "application/json",
                     "Authorization": 'Bearer '+localStorage.getItem('token')
