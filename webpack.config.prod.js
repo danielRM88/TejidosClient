@@ -4,7 +4,7 @@ const webpack = require('webpack')
 export default {
   devtool: 'source-map',
   entry: [
-    './src/index.jsx'
+    './src/index'
   ],
   output: {
     path: path.join(__dirname, 'public'),
