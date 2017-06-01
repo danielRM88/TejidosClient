@@ -3,7 +3,6 @@ import ReactDOM                                      from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import {Provider}                                    from 'react-redux';
 import {createStore, applyMiddleware}                from 'redux';
-import createLogger                                  from 'redux-logger';
 import reducer                                       from './reducers/reducer';
 import App                                           from './containers/AppContainer';
 import Home                                          from './components/Home';
@@ -54,7 +53,6 @@ const NotFound = () => (
 )
 
 let token = localStorage.getItem('token') || null
-const logger = createLogger();
 const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), token, loading: false }, 
                             fabrics: {}, 
                             clients: {}, 
@@ -63,8 +61,7 @@ const INIT_STATE = fromJS({ auth: { isAuthenticated: (token ? true : false), tok
                             invoices: {},
                             stocks: {},
                             messages: {list: []} });
-const store = createStore(reducer, INIT_STATE, applyMiddleware(logger, 
-                                                                authMiddleware, 
+const store = createStore(reducer, INIT_STATE, applyMiddleware(authMiddleware, 
                                                                 fabricsMiddleware, 
                                                                 clientsMiddleware, 
                                                                 suppliersMiddleware, 
