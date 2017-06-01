@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const PurchaseForm = React.createClass({
   getInitialState: function () {
-    return { supplierId: null, inventories: [], purchaseDate: moment(), subtotal: 0, total: 0, vat: 12 };
+    return { supplierId: null, inventories: [], purchaseDate: moment.utc(), subtotal: 0, total: 0, vat: 12 };
   },
   componentDidMount: function () {
     if(this.props.id == undefined) {
@@ -21,7 +21,9 @@ const PurchaseForm = React.createClass({
       this.refs.purchaseNumber.value = purchaseNumber
     
       if(purchaseDate){
-        this.refs.purchaseDate.value = purchaseDate
+        this.setState({
+          purchaseDate: moment.utc(purchaseDate)
+        });
       }
       if(vat){
         this.setState({

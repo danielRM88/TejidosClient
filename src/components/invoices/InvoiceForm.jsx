@@ -9,7 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const InvoiceForm = React.createClass({
   getInitialState: function () {
-    return { client: null, sales: [], invoiceDate: moment(), subtotal: 0, total: 0, vat: 12 };
+    return { client: null, sales: [], invoiceDate: moment.utc(), subtotal: 0, total: 0, vat: 12 };
   },
   componentDidMount: function () {
     if(this.props.id == undefined) {
@@ -33,7 +33,9 @@ const InvoiceForm = React.createClass({
       this.refs.invoiceNumber.value = invoiceNumber
     
       if(invoiceDate){
-        this.refs.invoiceDate.value = invoiceDate
+        this.setState({
+          invoiceDate: moment.utc(invoiceDate)
+        });
       }
       if(vat){
         this.setState({
@@ -123,7 +125,7 @@ const InvoiceForm = React.createClass({
   },
   onDateChange: function (date) {
     this.setState({
-      invoiceDate: date,
+      invoiceDate: date
     });
   },
   render: function() {
