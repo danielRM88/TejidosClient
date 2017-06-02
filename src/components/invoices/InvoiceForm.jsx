@@ -232,10 +232,8 @@ const InvoiceForm = React.createClass({
                                   placeholder="Codigo"
                                   backspaceRemoves={true} />
                           </td>
-                          {/*<input type="text" ref={sale.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, sale.index) } onKeyDown={ (event) => this.handleTabFirstField(event, sale.index) }/> */}
                           <td><input type="text" ref={sale.index+"_pieces"} className="form-control" placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, sale.index) }/></td>
                           <td><input type="text" ref={sale.index+"_amount"} className="form-control" placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, sale.index) }/></td>
-                          {/*<input type="text" ref={sale.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }/>*/}
                           <td><select ref={sale.index+"_unit"} className="form-control" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }>
                             <option value="m">Metros</option>
                             <option value="kg">Kgs.</option>

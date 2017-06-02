@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import PurchaseForm from './PurchaseForm';
 
 export default React.createClass({
@@ -21,7 +20,6 @@ export default React.createClass({
           subtotal={subtotal}
           inventories={inventories}
           onActionClick={this.props.onUpdateClick}/>
-        <Link to="/purchases"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
       </div>
     )

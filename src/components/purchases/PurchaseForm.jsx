@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import DatePicker from 'react-datepicker';
@@ -122,92 +123,178 @@ const PurchaseForm = React.createClass({
     const { id, purchaseNumber, supplierTypeId, supplierNumberId, supplierId, purchaseDate, ivaId, ivaPercentage, subtotal } = this.props;
     const AsyncComponent = Select.Async;
     return (
-      <form name="purchaseForm" onSubmit={(event) => this.handleClick(event)}>
-        <input type="text" ref="purchaseNumber" placeholder="No. Compra" defaultValue={purchaseNumber} autoFocus/>
-        <AsyncComponent multi={false} 
-                        value={this.state.supplierId} 
-                        onChange={this.onSupplierValueChange} 
-                        valueKey="value" 
-                        cache={false}
-                        labelKey="label" 
-                        loadOptions={this.getSuppliers} 
-                        placeholder="Rif del Proveedor"
-                        backspaceRemoves={true} />
-        <DatePicker
-          ref="purchaseDate"
-          dateFormat="DD/MM/YYYY"
-          selected={this.state.purchaseDate}
-          onChange={this.onDateChange} />
-        <hr/>
-        {
-          this.state.inventories.map((inventory, index) => {
-            if(inventory.index > maxIndex) {
-              maxIndex = inventory.index;
-            }
-            let fabricId = inventory.fabricId;
-            let fabricCode = inventory.fabricCode;
-            let unitPrice = inventory.unitPrice;
-            let pieces = inventory.pieces;
-            let amount = inventory.amount;
-            let unit = inventory.unit;
-            let fabricUnitPrice = inventory.fabricUnitPrice;
-            return (
-              <div key={inventory.index}>
-                <p>{inventory.index}</p>
-                <div>
-                  <AsyncComponent multi={false} 
-                        value={inventory.fabricCode} 
-                        onChange={ (value) => {
-                            let invs = this.state.inventories.map( (inv) => {
-                              if(inv.index === inventory.index) {
-                                inv.fabricCode = value;
-                                inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
-                                inv.fabricUnitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
-                                this.refs[inventory.index+"_fabricUnitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
-
-                              }
-                              return inv;
-                            });
-                            this.setState({
-                              inventories: invs
-                            });
-                          }
-                        } 
-                        valueKey="value" 
-                        cache={false}
-                        labelKey="label" 
-                        loadOptions={this.getFabricCodes} 
-                        placeholder="Codigo"
-                        backspaceRemoves={true} />
-                  {/*<input type="text" ref={inventory.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, inventory.index) } onKeyDown={ (event) => this.handleTabFirstField(event, inventory.index) }/> */}
-                  <input type="text" ref={inventory.index+"_pieces"} placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, inventory.index) }/>
-                  <input type="text" ref={inventory.index+"_amount"} placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, inventory.index) }/>
-                  {/*<input type="text" ref={inventory.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }/>*/}
-                  <select ref={inventory.index+"_unit"} defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }>
-                    <option value="m">Metros</option>
-                    <option value="kg">Kgs.</option>
-                  </select>
-                  <input type="text" ref={inventory.index+"_unitPrice"} placeholder="Precio Costo" defaultValue={unitPrice} onChange={ (event) => this.onUnitPriceChanged(event, inventory.index) }/>
-                  <input type="text" ref={inventory.index+"_fabricUnitPrice"} placeholder="Precio Venta" defaultValue={fabricUnitPrice} onChange={ (event) => this.onSalePriceChanged(event, inventory.index) }/>
+      <div className="col-sm-12">
+        <form name="purchaseForm" onSubmit={(event) => this.handleClick(event)}>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="col-sm-2">
+                <div className="form-group">
+                  <label>Nro.</label>
+                  <input type="text" className="form-control" ref="purchaseNumber" placeholder="No. Compra" defaultValue={purchaseNumber} autoFocus/>
                 </div>
-                <button type="button" onKeyDown={ (event) => this.handleTabFinalField(event, inventory.index) } onClick={ (event) => this.removeInventory(event, inventory.index) }>Eliminar tela</button>
               </div>
-            )
-          })
-        }
-        <hr/>
-        {/*<select ref="formOfPayent" defaultValue="transferencia">
-          <option value="transferencia">Trasferencia</option>
-          <option value="cheque">Cheque</option>
-          <option value="deposito">Deposito</option>
-          <option value="efectivo">Efectivo</option>
-        </select>*/}
-        <p ref="subtotal">Subtotal: {this.state.subtotal.toFixed(2)}</p>
-        <input type="text" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
-        <p ref="total">Total: {this.state.total.toFixed(2)}</p>
-        <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
-        <button onClick={(event) => this.addInventory(event, maxIndex+1)}>Agregar tela</button>
-      </form>
+              <div className="col-sm-6">
+                <div className="form-group">
+                  <label>Rif del Proveedor</label>
+                  <AsyncComponent multi={false} 
+                                  value={this.state.supplierId} 
+                                  onChange={this.onSupplierValueChange} 
+                                  valueKey="value" 
+                                  cache={false}
+                                  labelKey="label" 
+                                  loadOptions={this.getSuppliers} 
+                                  placeholder="Rif del Proveedor"
+                                  backspaceRemoves={true} />
+                </div>
+              </div>
+              <div className="col-sm-4">
+                <div className="form-group">
+                  <label>Fecha</label>
+                  <br/>
+                  <DatePicker
+                    ref="purchaseDate"
+                    dateFormat="DD/MM/YYYY"
+                    selected={this.state.purchaseDate}
+                    onChange={this.onDateChange}
+                    className="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <hr/>
+            <h2>Telas</h2>
+          </div>
+          <div className="row">
+            <div className="col-xs-12">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Codigo</th>
+                    <th>Piezas</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Precio Costo</th>
+                    <th>Precio Venta</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    this.state.inventories.map((inventory, index) => {
+                      if(inventory.index > maxIndex) {
+                        maxIndex = inventory.index;
+                      }
+                      let fabricId = inventory.fabricId;
+                      let fabricCode = inventory.fabricCode;
+                      let unitPrice = inventory.unitPrice;
+                      let pieces = inventory.pieces;
+                      let amount = inventory.amount;
+                      let unit = inventory.unit;
+                      let fabricUnitPrice = inventory.fabricUnitPrice;
+                      return (
+                        <tr key={inventory.index}>
+                          <td className="col-xs-4">
+                            <AsyncComponent multi={false} 
+                                  value={inventory.fabricCode} 
+                                  onChange={ (value) => {
+                                      let invs = this.state.inventories.map( (inv) => {
+                                        if(inv.index === inventory.index) {
+                                          inv.fabricCode = value;
+                                          inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
+                                          inv.fabricUnitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
+                                          this.refs[inventory.index+"_fabricUnitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
+
+                                        }
+                                        return inv;
+                                      });
+                                      this.setState({
+                                        inventories: invs
+                                      });
+                                    }
+                                  } 
+                                  valueKey="value" 
+                                  cache={false}
+                                  labelKey="label" 
+                                  loadOptions={this.getFabricCodes} 
+                                  placeholder="Codigo"
+                                  backspaceRemoves={true} />
+                          </td>
+                            {/*<input type="text" ref={inventory.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, inventory.index) } onKeyDown={ (event) => this.handleTabFirstField(event, inventory.index) }/> */}
+                          <td><input type="text" ref={inventory.index+"_pieces"} className="form-control" placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, inventory.index) }/></td>
+                          <td><input type="text" ref={inventory.index+"_amount"} className="form-control" placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, inventory.index) }/></td>
+                            {/*<input type="text" ref={inventory.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }/>*/}
+                          <td><select ref={inventory.index+"_unit"} className="form-control" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, inventory.index) }>
+                            <option value="m">Metros</option>
+                            <option value="kg">Kgs.</option>
+                          </select></td>
+                          <td><input type="text" ref={inventory.index+"_unitPrice"} className="form-control" placeholder="Precio Costo" defaultValue={unitPrice} onChange={ (event) => this.onUnitPriceChanged(event, inventory.index) }/></td>
+                          <td><input type="text" ref={inventory.index+"_fabricUnitPrice"} className="form-control" placeholder="Precio Venta" defaultValue={fabricUnitPrice} onChange={ (event) => this.onSalePriceChanged(event, inventory.index) }/></td>
+                          <td><button type="button"className="btn btn-sm btn-danger" onKeyDown={ (event) => this.handleTabFinalField(event, inventory.index) } onClick={ (event) => this.removeInventory(event, inventory.index) }>Eliminar tela</button></td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+              <div className="text-center">
+                <button onClick={(event) => this.addInventory(event, maxIndex+1)} className="btn btn-sm btn-default">Agregar tela</button>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <hr/>
+          </div>
+          {/*<select ref="formOfPayent" defaultValue="transferencia">
+            <option value="transferencia">Trasferencia</option>
+            <option value="cheque">Cheque</option>
+            <option value="deposito">Deposito</option>
+            <option value="efectivo">Efectivo</option>
+          </select>*/}
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Subtl:</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" disabled ref="subtotal" value={this.state.subtotal.toFixed(2)}/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Iva %</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Total:</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" disabled ref="total" value={this.state.total.toFixed(2)}/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div className="col-xs-2 pull-right">
+            <button type="submit" className="btn btn-sm btn-success"> { id ? "Actualizar" : "Crear" } </button>
+            &nbsp;
+            <Link to="/purchases" className="btn btn-sm btn-default"> Cancelar </Link>
+          </div>
+        </form>
+      </div>
     )
   },
   onVatChanged: function (event) {

@@ -5,10 +5,15 @@ export default React.createClass({
     const { messages } = this.props
     if(messages != undefined) {
       return (
-        <div>
+        <div className="col-sm-12">
           {
             messages.map((message, index) => {
-              return (<h2 key={index}>{message}</h2>);
+              return (
+                <div className="alert alert-danger alert-dismissible" role="alert">
+                  <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p key={index}>{message}</p>
+                </div>
+              )
             })
           }
         </div>
