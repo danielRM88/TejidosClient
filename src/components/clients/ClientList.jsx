@@ -10,7 +10,7 @@ export default React.createClass({
         return (
           <div>
             <h1>Clientes</h1>
-            <table>
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Nombre</th>
@@ -31,15 +31,20 @@ export default React.createClass({
                       <td>{client.get('number_id')}</td>
                       <td>{client.get('address')}</td>
                       <td>{client.get('email')}</td>
-                      <td><Link to={`/clients/${client.get('id')}/edit`}> Editar </Link></td>
-                      <td><a href="#" onClick={(event) => this.handleClick(event, client.get('id'))}> Eliminar </a></td>
+                      <td><Link to={`/clients/${client.get('id')}/edit`} className="btn btn-sm btn-primary"> Editar </Link></td>
+                      <td><a href="#" onClick={(event) => this.handleClick(event, client.get('id'))} className="btn btn-sm btn-danger"> Eliminar </a></td>
                     </tr>
                   )
                 }) }
               </tbody>
             </table>
-            <Link to="/clients/new"> Nuevo Cliente </Link>
-            <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            <div className="text-center">
+              <Link to="/clients/new" className="btn btn-sm btn-success"> Nuevo Cliente </Link>
+              <br/>
+              <br/>
+              <br/>
+              <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            </div>
           </div>
         )
       } else {
@@ -47,7 +52,7 @@ export default React.createClass({
           <div>
             <h1>Clientes</h1>
             <h2>No se encontraron clientes en el sistema</h2>
-            <Link to="/clients/new"> Nuevo Cliente </Link>
+            <Link to="/clients/new" className="btn btn-sm btn-success"> Nuevo Cliente </Link>
           </div>
         )
       }

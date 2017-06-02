@@ -10,7 +10,7 @@ export default React.createClass({
         return (
           <div>
             <h1>Compras</h1>
-            <table>
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Numero</th>
@@ -35,15 +35,20 @@ export default React.createClass({
                       <td>{subtotal.toFixed(2)}</td>
                       <td>{vat.toFixed(2)}</td>
                       <td>{(subtotal+(subtotal*vat/100)).toFixed(2)}</td>
-                      <td><Link to={`/purchases/${purchase.get('id')}/edit`}> Editar </Link></td>
-                      <td><a href="#" onClick={(event) => this.handleClick(event, purchase.get('id'))}> Eliminar </a></td>
+                      <td><Link to={`/purchases/${purchase.get('id')}/edit`} className="btn btn-sm btn-primary"> Editar </Link></td>
+                      <td><a href="#" onClick={(event) => this.handleClick(event, purchase.get('id'))} className="btn btn-sm btn-danger"> Eliminar </a></td>
                     </tr>
                   )
                 }) }
               </tbody>
             </table>
-            <Link to="/purchases/new"> Nueva Compra </Link>
-            <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            <div className="text-center">
+              <Link to="/purchases/new" className="btn btn-sm btn-success"> Nueva Compra </Link>
+              <br/>
+              <br/>
+              <br/>
+              <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            </div>
           </div>
         )
       } else {
@@ -51,7 +56,7 @@ export default React.createClass({
           <div>
             <h1>Compras</h1>
             <h2>No se encontraron compras en el sistema</h2>
-            <Link to="/purchases/new"> Nueva Compra </Link>
+            <Link to="/purchases/new" className="btn btn-sm btn-success"> Nueva Compra </Link>
           </div>
         )
       }

@@ -10,7 +10,7 @@ export default React.createClass({
         return (
           <div>
             <h1>Inventario</h1>
-            <table>
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Codigo Tela</th>
@@ -32,7 +32,12 @@ export default React.createClass({
                 }) }
               </tbody>
             </table>
-            <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            <div className="text-center">
+              <br/>
+              <br/>
+              <br/>
+              <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            </div>
           </div>
         )
       } else {

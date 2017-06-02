@@ -10,7 +10,7 @@ export default React.createClass({
         return (
           <div>
             <h1>Telas</h1>
-            <table>
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Codigo</th>
@@ -29,15 +29,20 @@ export default React.createClass({
                       <td>{fabric.get('description')}</td>
                       <td>{fabric.get('color')}</td>
                       <td>{fabric.get('unit_price')}</td>
-                      <td><Link to={`/fabrics/${fabric.get('id')}/edit`}> Editar </Link></td>
-                      <td><a href="#" onClick={(event) => this.handleClick(event, fabric.get('id'))}> Eliminar </a></td>
+                      <td><Link to={`/fabrics/${fabric.get('id')}/edit`} className="btn btn-sm btn-primary"> Editar </Link></td>
+                      <td><a href="#" onClick={(event) => this.handleClick(event, fabric.get('id'))} className="btn btn-sm btn-danger"> Eliminar </a></td>
                     </tr>
                   )
                 }) }
               </tbody>
             </table>
-            <Link to="/fabrics/new"> Nueva Tela </Link>
-            <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            <div className="text-center">
+              <Link to="/fabrics/new" className="btn btn-sm btn-success"> Nueva Tela </Link>
+              <br/>
+              <br/>
+              <br/>
+              <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            </div>
           </div>
         )
       } else {
@@ -45,7 +50,7 @@ export default React.createClass({
           <div>
             <h1>Telas</h1>
             <h2>No se encontraron telas en el sistema</h2>
-            <Link to="/fabrics/new"> Nueva Tela </Link>
+            <Link to="/fabrics/new" className="btn btn-sm btn-success"> Nueva Tela </Link>
           </div>
         )
       }

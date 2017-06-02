@@ -10,7 +10,7 @@ export default React.createClass({
         return (
           <div>
             <h1>Proveedores</h1>
-            <table>
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Nombre</th>
@@ -31,15 +31,20 @@ export default React.createClass({
                       <td>{supplier.get('number_id')}</td>
                       <td>{supplier.get('address')}</td>
                       <td>{supplier.get('email')}</td>
-                      <td><Link to={`/suppliers/${supplier.get('id')}/edit`}> Editar </Link></td>
-                      <td><a href="#" onClick={(event) => this.handleClick(event, supplier.get('id'))}> Eliminar </a></td>
+                      <td><Link to={`/suppliers/${supplier.get('id')}/edit`} className="btn btn-sm btn-primary"> Editar </Link></td>
+                      <td><a href="#" onClick={(event) => this.handleClick(event, supplier.get('id'))} className="btn btn-sm btn-danger"> Eliminar </a></td>
                     </tr>
                   )
                 }) }
               </tbody>
             </table>
-            <Link to="/suppliers/new"> Nuevo Proveedor </Link>
-            <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            <div className="text-center">
+              <Link to="/suppliers/new" className="btn btn-sm btn-success"> Nuevo Proveedor </Link>
+              <br/>
+              <br/>
+              <br/>
+              <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={ this.props.onPageClick }/>
+            </div>
           </div>
         )
       } else {
@@ -47,7 +52,7 @@ export default React.createClass({
           <div>
             <h1>Proveedores</h1>
             <h2>No se encontraron proveedores en el sistema</h2>
-            <Link to="/suppliers/new"> Nuevo Proveedor </Link>
+            <Link to="/suppliers/new" className="btn btn-sm btn-success"> Nuevo Proveedor </Link>
           </div>
         )
       }

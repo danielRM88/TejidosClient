@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import FabricForm from './FabricForm';
 
 export default React.createClass({
@@ -16,7 +15,6 @@ export default React.createClass({
           color={color} 
           unitPrice={unitPrice} 
           onActionClick={this.props.onUpdateClick}/>
-        <Link to="/fabrics"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
       </div>
     )

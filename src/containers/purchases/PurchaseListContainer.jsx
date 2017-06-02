@@ -1,5 +1,5 @@
 import PurchaseList from '../../components/purchases/PurchaseList'
-import { deletePurchaseRequest, getPurchaseRequest } from '../../actions/purchasesActions';
+import { deletePurchaseRequest, getPurchasesRequest } from '../../actions/purchasesActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deletePurchaseRequest(purchase_id));
   },
   onPageClick(page) {
-    dispatch(getPurchaseRequest(page));
+    dispatch(getPurchasesRequest(page));
   }
 });
 

@@ -1,5 +1,5 @@
 import InvoiceList from '../../components/invoices/InvoiceList'
-import { deleteInvoiceRequest, getInvoiceRequest } from '../../actions/invoicesActions';
+import { deleteInvoiceRequest, getInvoicesRequest } from '../../actions/invoicesActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deleteInvoiceRequest(invoice_id));
   },
   onPageClick(page) {
-    dispatch(getInvoiceRequest(page));
+    dispatch(getInvoicesRequest(page));
   }
 });
 

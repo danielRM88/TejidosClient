@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 const ClientForm = React.createClass({
   componentDidUpdate: function (prevProps, prevState) {
@@ -35,17 +36,43 @@ const ClientForm = React.createClass({
       number = phone.phone_number
     }
     return (
+      <div className="col-sm-6">
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="clientName" placeholder="Nombre del Cliente" defaultValue={clientName} autoFocus/>
-          <input type="text" ref="typeId" placeholder="Tipo de Id." defaultValue={typeId}/>
-          <input type="text" ref="numberId" placeholder="Numero de Id." defaultValue={numberId}/>
-          <input type="text" ref="address" placeholder="Direccion" defaultValue={address}/>
-          <input type="text" ref="email" placeholder="Email" defaultValue={email}/>
-          <input type="text" ref="country_code" placeholder="Código del país" defaultValue={country_code}/>
-          <input type="text" ref="area_code" placeholder="Código de area" defaultValue={area_code}/>
-          <input type="text" ref="number" placeholder="Teléfono" defaultValue={number}/>
-          <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
+          <div className="form-group">
+            <label>Nombre del Client</label>
+            <input type="text" ref="clientName" className="form-control" placeholder="Nombre del Cliente" defaultValue={clientName} autoFocus/>
+          </div>
+          <div className="form-group">
+            <label>Tipo de Id.</label>
+            <input type="text" ref="typeId" className="form-control" placeholder="Tipo de Id." defaultValue={typeId}/>
+          </div>
+          <div className="form-group">
+            <label>Numero de Id.</label>
+            <input type="text" ref="numberId" className="form-control" placeholder="Numero de Id." defaultValue={numberId}/>
+          </div>
+          <div className="form-group">
+            <label>Direccion</label>
+            <input type="text" ref="address" className="form-control" placeholder="Direccion" defaultValue={address}/>
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input type="text" ref="email" className="form-control" placeholder="Email" defaultValue={email}/>
+          </div>
+          <div className="form-group">
+            <label>Telefono</label>
+            <div className="controls form-inline">
+              <input type="text" ref="country_code" className="form-control" placeholder="Código del país" defaultValue={country_code}/>
+              <input type="text" ref="area_code" className="form-control" placeholder="Código de area" defaultValue={area_code}/>
+              <input type="text" ref="number" className="form-control" placeholder="Teléfono" defaultValue={number}/>
+            </div>
+          </div>
+          <div className="text-center">
+            <button type="submit" className="btn btn-sm btn-success"> { id ? "Actualizar" : "Crear" } </button>
+            &nbsp;
+            <Link to="/clients" className="btn btn-sm btn-default"> Cancelar </Link>
+          </div>
         </form>
+      </div>
     )
   },
   handleClick: function (event) {
