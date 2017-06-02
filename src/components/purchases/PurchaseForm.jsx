@@ -145,6 +145,7 @@ const PurchaseForm = React.createClass({
                                   loadOptions={this.getSuppliers} 
                                   placeholder="Rif del Proveedor"
                                   backspaceRemoves={true} />
+                  <Link to="/suppliers/new" target="_blank"> Nuevo Proveedor </Link>
                 </div>
               </div>
               <div className="col-sm-4">
