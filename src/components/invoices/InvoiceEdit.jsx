@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import InvoiceForm from './InvoiceForm';
 
 export default React.createClass({
@@ -21,7 +20,6 @@ export default React.createClass({
           subtotal={subtotal}
           sales={sales}
           onActionClick={this.props.onUpdateClick}/>
-        <Link to="/invoices"> Cancelar </Link>
         { loading ? (<p>Loading...</p>) : "" }
       </div>
     )

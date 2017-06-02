@@ -134,94 +134,192 @@ const InvoiceForm = React.createClass({
     const { id, invoiceNumber, clientTypeId, clientNumberId, clientId, invoiceDate, ivaId, ivaPercentage, subtotal } = this.props;
     const AsyncComponent = Select.Async;
     return (
-      <form name="invoiceForm" onSubmit={(event) => this.handleClick(event)}>
-        <input type="text" ref="invoiceNumber" placeholder="No. Factura" defaultValue={invoiceNumber} autoFocus/>
-        <AsyncComponent multi={false} 
-                        value={this.state.client} 
-                        onChange={this.onClientValueChange} 
-                        valueKey="value" 
-                        cache={false}
-                        labelKey="label" 
-                        loadOptions={this.getClients} 
-                        placeholder="Id. del Cliente"
-                        backspaceRemoves={true} />
-        <Link to="/clients/new" target="_blank"> Nuevo Cliente </Link>
-        <br/>
-        <DatePicker
-          ref="invoiceDate"
-          dateFormat="DD/MM/YYYY"
-          selected={this.state.invoiceDate}
-          onChange={this.onDateChange} />
-        <hr/>
-        {
-          this.state.sales.map((sale, index) => {
-            if(sale.index > maxIndex) {
-              maxIndex = sale.index;
-            }
-            let fabricId = sale.fabricId;
-            let fabricCode = sale.fabricCode;
-            let fabric = sale.fabric;
-            let unitPrice = sale.unitPrice;
-            let pieces = sale.pieces;
-            let amount = sale.amount;
-            let unit = sale.unit;
-            return (
-              <div key={sale.index}>
-                <p>{sale.index}</p>
-                <div>
-                  <AsyncComponent multi={false} 
-                        value={sale.fabric} 
-                        onChange={ (value) => {
-                            let invs = this.state.sales.map( (inv) => {
-                              if(inv.index === sale.index) {
-                                inv.fabric = value;
-                                inv.fabricCode = value.label;
-                                inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
-                                inv.unitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
-                                this.refs[sale.index+"_unitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
-
-                              }
-                              return inv;
-                            });
-                            this.setState({
-                              sales: invs
-                            });
-                          }
-                        } 
-                        valueKey="value" 
-                        cache={false}
-                        labelKey="label" 
-                        loadOptions={this.getFabricCodes} 
-                        placeholder="Codigo"
-                        backspaceRemoves={true} />
-                  {/*<input type="text" ref={sale.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, sale.index) } onKeyDown={ (event) => this.handleTabFirstField(event, sale.index) }/> */}
-                  <input type="text" ref={sale.index+"_pieces"} placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, sale.index) }/>
-                  <input type="text" ref={sale.index+"_amount"} placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, sale.index) }/>
-                  {/*<input type="text" ref={sale.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }/>*/}
-                  <select ref={sale.index+"_unit"} defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }>
-                    <option value="m">Metros</option>
-                    <option value="kg">Kgs.</option>
-                  </select>
-                  <input type="text" ref={sale.index+"_unitPrice"} placeholder="Precio" defaultValue={unitPrice} onChange={ (event) => this.onUnitPriceChanged(event, sale.index) }/>
+      <div className="col-sm-12">
+        <form name="invoiceForm" onSubmit={(event) => this.handleClick(event)}>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="col-sm-2">
+                <div className="form-group">
+                  <label>Nro.</label>
+                  <input type="text" className="form-control" ref="invoiceNumber" placeholder="No. Factura" defaultValue={invoiceNumber} autoFocus/>
                 </div>
-                <button type="button" onKeyDown={ (event) => this.handleTabFinalField(event, sale.index) } onClick={ (event) => this.removeSale(event, sale.index) }>Eliminar tela</button>
               </div>
-            )
-          })
-        }
-        <hr/>
-        <select ref="formOfPayent" defaultValue="transferencia">
-          <option value="transferencia">Trasferencia</option>
-          <option value="cheque">Cheque</option>
-          <option value="deposito">Deposito</option>
-          <option value="efectivo">Efectivo</option>
-        </select>
-        <p ref="subtotal">Subtotal: {this.state.subtotal.toFixed(2)}</p>
-        <input type="text" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
-        <p ref="total">Total: {this.state.total.toFixed(2)}</p>
-        <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
-        <button onClick={(event) => this.addSale(event, maxIndex+1)}>Agregar tela</button>
-      </form>
+              <div className="col-sm-6">
+                <div className="form-group">
+                  <label>Rif del Cliente</label>
+                  <AsyncComponent multi={false} 
+                                  value={this.state.client} 
+                                  onChange={this.onClientValueChange} 
+                                  valueKey="value" 
+                                  cache={false}
+                                  labelKey="label" 
+                                  loadOptions={this.getClients} 
+                                  placeholder="Id. del Cliente"
+                                  backspaceRemoves={true} />
+                  <Link to="/clients/new" target="_blank"> Nuevo Cliente </Link>
+                </div>
+              </div>
+              <div className="col-sm-4">
+                <div className="form-group">
+                  <label>Fecha</label>
+                  <br/>
+                  <DatePicker
+                    ref="invoiceDate"
+                    dateFormat="DD/MM/YYYY"
+                    selected={this.state.invoiceDate}
+                    onChange={this.onDateChange}
+                    className="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <hr/>
+            <h2>Telas</h2>
+          </div>
+          <div className="row">
+            <div className="col-xs-12">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Codigo</th>
+                    <th>Piezas</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Precio</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    this.state.sales.map((sale, index) => {
+                      if(sale.index > maxIndex) {
+                        maxIndex = sale.index;
+                      }
+                      let fabricId = sale.fabricId;
+                      let fabricCode = sale.fabricCode;
+                      let fabric = sale.fabric;
+                      let unitPrice = sale.unitPrice;
+                      let pieces = sale.pieces;
+                      let amount = sale.amount;
+                      let unit = sale.unit;
+                      return (
+                        <tr key={sale.index}>
+                          <td className="col-xs-4">
+                            <AsyncComponent multi={false} 
+                                  value={sale.fabric} 
+                                  onChange={ (value) => {
+                                      let invs = this.state.sales.map( (inv) => {
+                                        if(inv.index === sale.index) {
+                                          inv.fabric = value;
+                                          inv.fabricCode = value.label;
+                                          inv.fabricId = (value.fabric == undefined ? undefined : value.fabric.id);
+                                          inv.unitPrice = (value.fabric == undefined ? undefined : value.fabric.unit_price);
+                                          this.refs[sale.index+"_unitPrice"].value = (value.fabric == undefined ? "" : value.fabric.unit_price);
+
+                                        }
+                                        return inv;
+                                      });
+                                      this.setState({
+                                        sales: invs
+                                      });
+                                    }
+                                  } 
+                                  valueKey="value" 
+                                  cache={false}
+                                  labelKey="label" 
+                                  loadOptions={this.getFabricCodes} 
+                                  placeholder="Codigo"
+                                  backspaceRemoves={true} />
+                          </td>
+                          {/*<input type="text" ref={sale.index+"_fabricCode"} placeholder="Codigo" defaultValue={fabricCode} onChange={ (event) => this.onFabricCodeChanged(event, sale.index) } onKeyDown={ (event) => this.handleTabFirstField(event, sale.index) }/> */}
+                          <td><input type="text" ref={sale.index+"_pieces"} className="form-control" placeholder="Piezas" defaultValue={pieces} onChange={ (event) => this.onPiecesChanged(event, sale.index) }/></td>
+                          <td><input type="text" ref={sale.index+"_amount"} className="form-control" placeholder="Cantidad" defaultValue={amount} onChange={ (event) => this.onAmountChanged(event, sale.index) }/></td>
+                          {/*<input type="text" ref={sale.index+"_unit"} placeholder="Unidad" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }/>*/}
+                          <td><select ref={sale.index+"_unit"} className="form-control" defaultValue={unit} onChange={ (event) => this.onUnitChanged(event, sale.index) }>
+                            <option value="m">Metros</option>
+                            <option value="kg">Kgs.</option>
+                          </select></td>
+                          <td><input type="text" ref={sale.index+"_unitPrice"} className="form-control" placeholder="Precio" defaultValue={unitPrice} onChange={ (event) => this.onUnitPriceChanged(event, sale.index) }/></td>
+                          <td><button type="button" className="btn btn-sm btn-danger" onKeyDown={ (event) => this.handleTabFinalField(event, sale.index) } onClick={ (event) => this.removeSale(event, sale.index) }>Eliminar tela</button></td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+              <div className="text-center">
+                <button onClick={(event) => this.addSale(event, maxIndex+1)} className="btn btn-sm btn-default">Agregar tela</button>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <hr/>
+          </div>
+          <div className="row">
+            <div className="col-sm-4 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Tipo de pago:</label>
+                  &nbsp;
+                  &nbsp;
+                  <select ref="formOfPayent" defaultValue="transferencia" className="form-control">
+                    <option value="transferencia">Trasferencia</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="deposito">Deposito</option>
+                    <option value="efectivo">Efectivo</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Subtl:</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" disabled ref="subtotal" value={this.state.subtotal.toFixed(2)}/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Iva %</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" ref="vat" placeholder="% IVA" value={this.state.vat} onChange={ (event) => this.onVatChanged(event) }/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3 pull-right">
+              <div className="control-group">
+                <div className="form-inline">
+                  <label>Total:</label>
+                  &nbsp;
+                  &nbsp;
+                  <input type="text" className="input-small form-control" disabled ref="total" value={this.state.total.toFixed(2)}/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div className="col-sm-2 pull-right">
+            <button type="submit" className="btn btn-sm btn-success"> { id ? "Actualizar" : "Crear" } </button>
+            &nbsp;
+            <Link to="/invoices" className="btn btn-sm btn-default"> Cancelar </Link>
+          </div>
+        </form>
+        <br/>
+        <br/>
+      </div>
     )
   },
   onVatChanged: function (event) {

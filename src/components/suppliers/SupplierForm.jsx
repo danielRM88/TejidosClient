@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 const SupplierForm = React.createClass({
   componentDidUpdate: function (prevProps, prevState) {
@@ -22,14 +23,35 @@ const SupplierForm = React.createClass({
   render: function() {
     const { id, supplierName, typeId, numberId, address, email } = this.props
     return (
+      <div className="col-sm-6">
         <form onSubmit={(event) => this.handleClick(event)}>
-          <input type="text" ref="supplierName" placeholder="Nombre del Proveedor" defaultValue={supplierName} autoFocus/>
-          <input type="text" ref="typeId" placeholder="Tipo de Id." defaultValue={typeId}/>
-          <input type="text" ref="numberId" placeholder="Numero de Id." defaultValue={numberId}/>
-          <input type="text" ref="address" placeholder="Direccion" defaultValue={address}/>
-          <input type="text" ref="email" placeholder="Email" defaultValue={email}/>
-          <button type="submit"> { id ? "Actualizar" : "Crear" } </button>
+          <div className="form-group">
+            <label>Nombre del Proveedor</label>
+            <input type="text" className="form-control" ref="supplierName" placeholder="Nombre del Proveedor" defaultValue={supplierName} autoFocus/>
+          </div>
+          <div className="form-group">
+            <label>Tipo de Id.</label>
+            <input type="text" className="form-control" ref="typeId" placeholder="Tipo de Id." defaultValue={typeId}/>
+          </div>
+          <div className="form-group">
+            <label>Numero de Id.</label>
+            <input type="text" className="form-control" ref="numberId" placeholder="Numero de Id." defaultValue={numberId}/>
+          </div>
+          <div className="form-group">
+            <label>Direccion</label>
+            <input type="text" className="form-control" ref="address" placeholder="Direccion" defaultValue={address}/>
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input type="text" className="form-control" ref="email" placeholder="Email" defaultValue={email}/>
+          </div>
+          <div className="text-center">
+            <button type="submit" className="btn btn-sm btn-success"> { id ? "Actualizar" : "Crear" } </button>
+            &nbsp;
+            <Link to="/suppliers" className="btn btn-sm btn-default"> Cancelar </Link>
+          </div>
         </form>
+      </div>
     )
   },
   handleClick: function (event) {
