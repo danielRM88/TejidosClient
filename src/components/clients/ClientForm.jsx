@@ -39,7 +39,7 @@ const ClientForm = React.createClass({
       <div className="col-sm-6">
         <form onSubmit={(event) => this.handleClick(event)}>
           <div className="form-group">
-            <label>Nombre del Client</label>
+            <label>Nombre del Cliente</label>
             <input type="text" ref="clientName" className="form-control" placeholder="Nombre del Cliente" defaultValue={clientName} autoFocus/>
           </div>
           <div className="form-group">
