@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/danielRM88/TejidosClient",
   "devDependencies": {
-    "babel-cli": "^6.8.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-react-display-name": "2.0.0",
